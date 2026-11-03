@@ -1,0 +1,7 @@
+# D1 Individual Reflection — Arnav Mishra
+
+I led the first-pass coding of CF1–CF4 before reviewing the full interview set with the group. These accounts brought together hostel constraints, hybrid working, household coordination and scepticism about carbon estimates. Comparing them helped connect individual examples to themes that could inform requirements across several contexts.
+
+The important analytical distinction was between a topic and a theme. “Transport” identifies an activity; interpreting late-night cab use through safety and curfew constraints explains why apparently lower-carbon alternatives may be unsuitable. Reflexive thematic analysis therefore required questioning the assumptions behind recommendations, rather than counting mentions or treating every preference as a requirement. The illustrative interviews support design hypotheses, not population-level conclusions.
+
+A weakness of splitting the initial coding is that each person may emphasise different details. Reviewing the full set helped address this, but the reasoning behind a shared interpretation also needs to remain visible. In D2, I will record supporting and contradictory examples alongside each proposed requirement and explain why alternatives were rejected. I will prioritise checking that evidence chain before refining presentation, so that document quality reflects analytical clarity as well as organisation.

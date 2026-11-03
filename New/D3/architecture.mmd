@@ -1,0 +1,8 @@
+flowchart TD
+    UI[JavaFX views and controls] --> APP[Application shell]
+    APP --> DOMAIN[Domain rules]
+    APP --> STORE[Versioned local CSV store]
+    DOMAIN --> EST[Estimate and provenance]
+    DOMAIN --> ACTION[Explicit action rules]
+    DOMAIN --> SCOPE[Personal / household boundary]
+    DOMAIN --> TEST[JUnit core tests]
