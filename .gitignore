@@ -1,0 +1,30 @@
+﻿# Nested repository metadata
+**/.git
+
+# OpenCode internal data and attachments
+.opencode/
+
+# Java build output
+**/target/
+**/bin/
+**/out/
+*.class
+
+# Temporary files
+**/tmp/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/

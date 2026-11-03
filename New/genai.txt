@@ -1,0 +1,38 @@
+# COMP2300 GenAI disclosure — project foundation and D2–D7 review package
+
+**Date:** 3 November 2026  
+**Status:** working disclosure for student completion and verification
+
+## Tool and version
+
+- OpenCode coding assistant using **GPT 6 Astra**, provider `omnirush`.
+
+The students must add any other tools used, their exact versions/builds and the
+purposes for which they were used in the full submission disclosure.
+
+## Assistance provided in this work cycle
+
+The assistant inspected the supplied COMP2300 specification, D1 PDF, Week 6 and
+Week 7 minutes, supplied peer-review PDF, supplied reflection material and the
+repository state. It drafted and organised the project index, requirements
+summary, strategy, technical logic, traceability matrix, roadmap, ownership and
+risk records, GitLab and review handbooks, D1 baseline record, the D2 working
+design/stories/rubric pack, a Java/JavaFX review implementation, automated test
+sources, build instructions and D2–D7 report handovers. It also performed
+Markdown-link, Git whitespace and source-syntax checks.
+
+## Human responsibility and limits
+
+This file does not claim that the students have already reviewed, understood,
+approved, submitted or independently authored every AI-assisted passage. Arnav,
+Keshav and Hiranya must inspect the files, correct them against their actual
+decisions and contributions, add any omitted tools, and retain only material they
+understand and can defend. AI-generated proposals are not meeting minutes,
+student peer reviews, lecturer feedback, participant findings, commits or test
+results.
+
+The D2 concept selection, story priorities, ownership allocation, task hours,
+meeting outcomes, peer reviews, participant sessions and roadmap are proposals
+or pending evidence until the team records its real decisions. The generated
+implementation is a review build; students must understand, test, modify and
+disclose any retained code before submission.

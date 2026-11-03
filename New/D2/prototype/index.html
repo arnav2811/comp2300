@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Footprint Lens — D2 working prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">D2 low-fidelity working prototype</p>
+      <h1>Footprint Lens</h1>
+      <p class="subtitle">An India-centric lens for understanding routines, checking assumptions and choosing what is realistic.</p>
+    </div>
+    <span class="status-chip">Illustrative design only</span>
+  </header>
+
+  <main class="shell">
+    <a class="skip-link" href="#workspace">Skip to current prototype panel</a>
+    <nav class="journey" aria-label="Prototype journey">
+      <p class="eyebrow">Journey</p>
+      <ol id="journey-list">
+        <li data-state="entry" class="active" aria-current="step"><button type="button"><span>P0</span>Start a record</button></li>
+        <li data-state="quantity" aria-current="false"><button type="button"><span>P1</span>Describe it</button></li>
+        <li data-state="result" aria-current="false"><button type="button"><span>P2</span>See the result</button></li>
+        <li data-state="assumptions" aria-current="false"><button type="button"><span>P3</span>Inspect assumptions</button></li>
+        <li data-state="action" aria-current="false"><button type="button"><span>P4</span>Choose an action</button></li>
+        <li data-state="unavailable" aria-current="false"><button type="button"><span>P5</span>Unknown estimate</button></li>
+        <li data-state="shared" aria-current="false"><button type="button"><span>P6</span>Shared total</button></li>
+      </ol>
+      <button class="text-button" id="reset-button" type="button">Reset prototype</button>
+    </nav>
+
+    <section id="workspace" class="workspace">
+      <div id="notice" class="notice" role="status"></div>
+      <p id="live-announcement" class="sr-only" aria-live="assertive"></p>
+      <section id="state-entry" class="panel" data-panel="entry">
+        <p class="eyebrow">P0 · Start a record</p>
+        <h2>What would you like to understand?</h2>
+        <p class="lede">Choose one routine. The prototype keeps scope visible so a household total is not mistaken for one person’s footprint.</p>
+        <div class="form-grid">
+        <label for="category">Activity category</label>
+          <select id="category">
+            <option value="electricity">Home electricity</option>
+            <option value="water">Water use</option>
+            <option value="travel">Travel</option>
+            <option value="food">Food</option>
+            <option value="packaging">Delivery packaging</option>
+            <option value="waste">Waste</option>
+            <option value="repair">Repair or reuse</option>
+          </select>
+          <label for="scope">Who does this describe?</label>
+          <select id="scope">
+            <option value="personal">Me / my activity</option>
+            <option value="household">A shared household activity</option>
+          </select>
+        </div>
+        <label class="check-row" for="protected">
+          <input id="protected" type="checkbox">
+          <span><strong>Mark as protected or necessary</strong><small>For example: safety, curfew, shift work, heat or housing constraints.</small></span>
+        </label>
+        <p id="category-boundary" class="field-note" role="status"></p>
+        <div class="button-row">
+          <button class="primary" id="begin-button" type="button">Continue to quantity</button>
+          <button class="secondary" id="example-button" type="button">Load illustrative example</button>
+          <button class="secondary" id="shared-button" type="button">Preview shared-total boundary</button>
+        </div>
+      </section>
+
+      <section id="state-quantity" class="panel hidden" data-panel="quantity">
+        <p class="eyebrow">P1 · Describe it</p>
+        <h2>Enter the known quantity</h2>
+        <p class="lede">The prototype accepts a whole activity record. Unknown is different from zero. You can go back without losing the form.</p>
+        <div class="form-grid">
+          <label for="quantity">Quantity (<span id="unit-label">kWh</span>)</label>
+          <input id="quantity" type="number" min="0" max="1000000" step="any" inputmode="decimal" placeholder="e.g. 4" aria-describedby="unit-help validation">
+          <span id="unit-label-title" class="form-label">Unit</span>
+          <output id="unit" aria-labelledby="unit-label-title" aria-describedby="unit-help">kWh</output>
+        </div>
+        <p id="unit-help" class="field-note">The category sets the unit so the prototype cannot silently calculate incompatible inputs.</p>
+        <p id="validation" class="field-error" role="alert"></p>
+        <div class="button-row">
+          <button class="secondary" data-back="entry" type="button">Back</button>
+          <button class="primary" id="save-button" type="button">Preview estimate</button>
+        </div>
+      </section>
+
+      <section id="state-result" class="panel hidden" data-panel="result">
+        <p class="eyebrow">P2 · See the result</p>
+        <h2 id="result-title">Your activity, explained</h2>
+        <div id="result-card" class="result-card"></div>
+        <div class="button-row">
+          <button class="secondary" data-go="assumptions" type="button">Inspect assumptions</button>
+          <button class="primary" data-go="action" type="button">Find a realistic action</button>
+          <button class="secondary hidden" id="unavailable-button" type="button">Why is the estimate unavailable?</button>
+        </div>
+        <button class="text-button" data-go="shared" type="button">How would this look as a shared total?</button>
+      </section>
+
+      <section id="state-assumptions" class="panel hidden" data-panel="assumptions">
+        <p class="eyebrow">P3 · Inspect assumptions</p>
+        <h2>What is behind this number?</h2>
+        <div class="assumption-table" id="assumption-table"></div>
+        <div class="callout warning"><strong>Evidence boundary.</strong> An illustrative value is a design fixture, not verified India-specific emissions data. The final application needs a source, year, geography, unit and boundary before using a factor.</div>
+        <div class="button-row">
+          <button class="secondary" data-back="result" type="button">Back to result</button>
+          <button class="primary" data-go="action" type="button">Continue to action</button>
+        </div>
+      </section>
+
+      <section id="state-action" class="panel hidden" data-panel="action">
+        <p class="eyebrow">P4 · Choose an action</p>
+        <h2>What is realistic for you?</h2>
+        <div id="action-card" class="action-card"></div>
+        <div class="button-row">
+          <button class="secondary" data-back="result" type="button">Back to result</button>
+          <button class="secondary" id="defer-button" type="button">Defer</button>
+          <button class="secondary" id="dismiss-button" type="button">Not feasible</button>
+          <button class="primary" id="choose-button" type="button">Choose this plan</button>
+        </div>
+        <p id="action-feedback" class="feedback" role="status"></p>
+      </section>
+
+      <section id="state-unavailable" class="panel hidden" data-panel="unavailable">
+        <p class="eyebrow">P5 · Unknown estimate</p>
+        <h2>Some records are still useful without a number</h2>
+          <div class="callout"><strong id="unavailable-category">This category</strong> can be kept visible in this walkthrough, but this prototype has no verified factor for it. Showing zero would be misleading.<p id="unavailable-reason"></p></div>
+        <ul class="plain-list">
+           <li>Keep the activity visible in this design walkthrough.</li>
+          <li>Explain what evidence is missing.</li>
+          <li>Do not invent a carbon credit or claim a reduction.</li>
+        </ul>
+        <div class="button-row">
+          <button class="secondary" data-back="result" type="button">Back to result</button>
+           <button class="primary" data-go="entry" type="button">Start another activity</button>
+        </div>
+      </section>
+
+      <section id="state-shared" class="panel hidden" data-panel="shared">
+        <p class="eyebrow">P6 · Shared total</p>
+        <h2>Shared does not mean personally attributed</h2>
+        <figure class="shared-diagram" role="img" aria-label="Shared household total boundary">
+           <div class="circle household"><span id="shared-heading">Household total</span><br><strong id="shared-total">Not calculated</strong></div>
+          <div class="boundary-arrow">does not prove</div>
+          <div class="circle person">One person’s share<br><strong>Unknown</strong></div>
+        </figure>
+        <p class="shared-context">Current scope: <strong id="shared-scope">Not selected</strong></p>
+        <div class="callout"><strong>Design rule.</strong> Show a communal activity as communal. A person may only see an individual view when the data and consent model support it; another household member cannot switch attribution on for them.</div>
+        <button class="primary" data-go="entry" type="button">Return to start</button>
+      </section>
+    </section>
+  </main>
+  <footer class="site-footer">D2 working artefact · No network requests · No personal data · No participant testing claimed</footer>
+  <noscript><p class="no-script">JavaScript is required to use this interactive prototype. The design specification remains available in the repository.</p></noscript>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

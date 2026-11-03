@@ -1,0 +1,13 @@
+COMP2300 GenAI disclosure — working record, updated 23 October 2026
+
+Tool: OpenAI Codex desktop assistant, GPT-6-based agent; exact selected model variant and desktop build were not exposed reliably in this task and must be copied from the app settings before submission. Three delegated AI agents assisted with requirements/PRISM, D1 evidence/traceability, and D2 conceptual design. They were not students and their reviews are not student peer assessment.
+
+Purposes: inspect supplied coursework and D1 PDFs; extract requirements and source-page references; audit compliance and evidence gaps; prepare project continuity, roadmap, ownership proposals, risks, GitLab workflow and D2 working material; perform cross-checks and generate review artefacts where documented.
+
+Existing supplied PDFs were preserved. Their earlier AI provenance is unknown and must be added by the students if applicable. No meetings, student contributions, evaluation results, lecturer feedback, commits or PRISM submissions have been fabricated. The generated documents contain proposals requiring student understanding, review and correction.
+
+Before hand-in: complete exact tool/model versions; list any additional AI tools and uses; identify retained AI-assisted sections and actual student verification. This is a disclosure draft, not a claim that student checks already occurred.
+
+Additional retained AI assistance on 22–23 October 2026: consolidation and editing of the D1 literature review and integrated report; source and formatting checks; drafting Hiranya’s individual reflection using his confirmed CF5–CF7 coding and full-set review contribution; D2 paper prototype; Java 21/JavaFX application, core validation and persistence, automated tests, build scripts and user guide; evaluation protocol, empty observation schema and analysis script; submission checklists and PDF generation. These are AI-assisted artefacts, not evidence that students independently performed the generated engineering work. Student review, comprehension and any modifications must be recorded honestly. No participant results or future sprint records were generated.
+
+23 October 2026 addition: prepared separate Arnav and Keshav D1 reflection drafts from the contribution allocation in ThemAnalysis.pdf p1 and the supplied analytical content; prepared six evidence-based peer-feedback wording drafts for the students to assess and adopt or correct. These drafts do not establish independent reviewer opinions, ratings, attendance or completed peer reviews.

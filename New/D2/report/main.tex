@@ -1,0 +1,236 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\definecolor{brand}{HTML}{176B52}
+\hypersetup{colorlinks=true,linkcolor=brand,urlcolor=brand,citecolor=brand}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\newcommand{\status}[1]{\textbf{\color{brand}[#1]}}
+\newcommand{\uncertain}[1]{\textit{#1}}
+
+\title{\textbf{Footprint Lens}\\[0.4em]
+  \large COMP2300 Deliverable 2: Conceptual Design\\
+  \normalsize India-Centric Carbon Footprint Awareness and Reduction}
+\author{Arnav Mishra \and Keshav Singhal \and Hiranya Makkar\\[0.4em]
+  \small University of Southampton\\
+  \small Team email addresses: to be confirmed before submission}
+\date{Version 0.2 review draft --- 3 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\centering
+\status{WORKING DRAFT}. This source is an AI-assisted design artefact requiring
+student review. It is not evidence of participant testing, team approval,
+Blackboard submission or achieved carbon reduction.}}
+\end{center}
+
+\section{Scope and evidence boundary}
+
+The official COMP2300 Topic 1 brief asks for an interactive tool that helps
+people understand activities affecting their carbon footprint and consider
+reduction actions across transport, home energy, food, waste and water. The D1
+baseline narrows this to understandable, transparent and feasible choices for
+urban Indian students, professionals and households.
+
+The D1 interviews are coursework-provided illustrative materials. They support
+design hypotheses, not population-level claims. The D1 literature also warns
+that intended change is not evidence of observed emission reduction
+\cite{hoffmann2024,lasarov2024}. This D2 design therefore evaluates
+comprehension and usability rather than claiming behavioural or climate impact.
+
+\section{Problem framing and design principles}
+
+The established Job to Be Done is:
+
+\begin{quote}
+When I want to understand how my everyday routines and household habits affect
+the environment, I want to see which activities matter most in terms I can
+picture and which realistic alternatives are open to me, so that I can make
+changes that fit my budget, safety, rota, and shared home without being
+misled, lectured, or blamed for constraints I cannot control.
+\end{quote}
+
+The design principles below preserve the D1 traceability:
+
+\begin{enumerate}[label=DP\arabic*.,leftmargin=*]
+\item Show the input, factor, boundary and evidence status behind an estimate
+      (S1, E2, RQ1).
+\item Offer feasible action rather than moral scoring when safety, shift work,
+      heat or housing constrain a choice (L3, E3).
+\item Keep the core interaction short and expose a detailed route without
+      making it mandatory (S3, E5).
+\item Show a shared activity as shared; do not infer a resident's emissions from
+      an equal bill or household total (L1/L2, RQ3).
+\item Represent Indian and circular practices without inventing unsupported
+      carbon credits (S2, E4, E14 boundary).
+\end{enumerate}
+
+\section{Concept alternatives}
+
+The official D2 brief requires evidence of broad ideation and three distinct
+concepts. The response families used as a working ideation canvas were an
+explain-and-compare journey, a household commons view, weekly action cards, a
+local travel explorer, a food/delivery friction reducer, an audit explorer, a
+rota-aware planner and an offline conversation card. The team must add the
+actual dated ideation evidence before submission.
+
+\subsection{Concept A: Contextual Choice Coach}
+
+The user records one activity, sees a result with assumptions and familiar
+context, marks constraints and compares one feasible next step. It directly
+combines D1's interpretation, low-effort and constraint tensions. Its principal
+risk is false precision; every fixture must be labelled and inspectable.
+
+\subsection{Concept B: Household Commons Board}
+
+A household sees communal activity cards, discusses an action and optionally
+creates a consented personal view. This most directly addresses L1/L2, but its
+consent and attribution model is difficult. A shared display cannot imply that
+one resident caused a communal total.
+
+\subsection{Concept C: Quiet-Week Action Cards}
+
+The user enters explicit constraints and receives one or two inspectable weekly
+cards, which can be chosen, deferred or dismissed. This addresses S3/L3, but
+personalisation must use explicit rules; speculative machine learning is not a
+dependency under the official D2 brief.
+
+\begin{table}[ht]
+\centering
+\caption{Provisional concept comparison}
+\begin{tabularx}{\textwidth}{@{}lXXX@{}}
+\toprule
+Criterion & A: Choice Coach & B: Commons Board & C: Quiet-Week Cards\\
+\midrule
+Must-epic coverage & High & Medium & Medium\\
+Provenance visibility & High & Medium & Medium\\
+Shared-home boundary & Medium & High & Low/medium\\
+Protected choices & High & Medium & High\\
+Java/JavaFX feasibility & High & Medium & Medium\\
+Primary risk & False precision & Attribution & Over-personalisation\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Provisional selection}
+
+\status{PROPOSAL} Concept A is recommended because it provides the smallest
+complete route through Must epics E1--E5 while making Concepts B and C's risks
+visible. This does not establish novelty: the team must compare verified
+existing tools on interaction boundary, assumption visibility and constraint
+handling before making a novelty claim.
+
+\section{Small user stories and acceptance criteria}
+
+\begin{table}[ht]
+\small
+\centering
+\caption{Initial stories for Concept A}
+\begin{tabularx}{\textwidth}{@{}p{1.2cm}p{2.1cm}X@{}}
+\toprule
+ID/epic & Stakeholder & Story and observable acceptance criteria\\
+\midrule
+D2-US01/E1 & P1--P6 & Enter one supported activity, quantity, unit and scope. Invalid or missing input is explained without discarding other entries.\\
+D2-US02/E1 & P1--P6 & Show kg CO2/CO2e beside a labelled familiar context; unavailable factors are not displayed as zero.\\
+D2-US03/E2 & P2/P3/P6 & Open factor, formula, year, geography, boundary and evidence status from the result.\\
+D2-US04/E2 & P2/P3/P6 & Reject invalid assumptions with a specific message and Back/Cancel recovery.\\
+D2-US05/E3 & P1/P4 & Mark safety, shift, heat or housing constraints as protected; retain the record without punitive scoring.\\
+D2-US06/E3 & P1/P3/P4 & Offer one eligible, non-judgemental action, or allow defer/dismiss when none is suitable.\\
+D2-US07/E4 & P1--P6 & Represent food, packaging, waste, repair or reuse; state numerical scope and allow descriptive records.\\
+D2-US08/E5 & P1/P4/P6 & Complete a short entry path with an explicit tap/time target and no mandatory detailed form.\\
+D2-US09/E5 & P1/P6 & Use readable labels, non-colour-only status and an honest language/accessibility boundary.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Low-fidelity prototype}
+
+The editable prototype is in `D2/prototype/index.html`. Its states are P0 entry,
+P1 quantity, P2 result, P3 assumptions, P4 action, P5 unavailable estimate and
+P6 shared-total boundary. It uses browser memory only and makes all fixture
+values visibly illustrative.
+
+The prototype deliberately demonstrates failure paths: negative/blank input,
+missing factors, protected choices and the distinction between a household total
+and a person's share. It does not persist personal data, call a service, provide
+a verified factor library or establish usability. The prototype's local HTTP
+smoke check passed on 3 November 2026; this is a software artefact check, not a
+participant evaluation.
+
+The proposed short-path target is three primary decisions from P0 to P2 in
+approximately 60 seconds for a prepared synthetic example. This is a D3
+evaluation hypothesis, not a measured outcome.
+
+\subsection{Prototype state sketch}
+
+\begin{verbatim}
+P0 entry/scope -> P1 quantity -> P2 result
+                                  |\
+                                  | \-- P6 shared boundary
+                                  |\
+                                  |---- P3 assumptions
+                                  |---- P4 action
+                                  \---- P5 unavailable explanation
+\end{verbatim}
+
+The full editable interaction inventory is in
+\texttt{D2/prototype/INTERACTION-INVENTORY.md}; it separates static checks from
+manual browser/accessibility evidence.
+
+\section{Evaluation plan}
+
+The proposed D3/D7 method is moderated, task-based usability testing with
+think-aloud prompts in a controlled quiet room. Participants must be recruited
+from another COMP2300 group and must not be asked for sensitive personal data.
+Tasks cover recording an activity, inspecting provenance, protecting a
+constraint, recording an unsupported category and explaining a shared total.
+
+Measures will include task completion, critical errors, help requests,
+comprehension answers and carefully recorded time/interaction observations. The
+team must set thresholds and sample handling rules before data collection.
+Findings will be descriptive and will not be presented as evidence of actual
+emission reduction.
+
+\section{Project management, tools and process reflection}
+
+The Week 7 supplied minutes record the decision to work from a single shared
+document, use GitLab Issues, translate E1--E5 into stories and begin concept
+sketches. The Week 6 supplied minutes record the initial GenAI boundary and
+state that lightweight machine learning was an investigation idea rather than an
+adopted dependency.
+
+This working cycle uses Git, Markdown, HTML/CSS/JavaScript for a low-fidelity
+design artefact, and LaTeX for the formal report source. The tool outputs require
+student review. Actual D2 ideation, team review, revisions, Blackboard actions
+and submission checks must be added from real records.
+
+\section{Limitations and D2 release gate}
+
+The design remains a hypothesis grounded in D1 and the official brief. Factor
+sources, novelty evidence, language review, shared attribution and final team
+selection remain to be confirmed. The report can become a submission only after
+the team adds actual ideation evidence, completes a non-author review, verifies
+all citations, compiles and inspects the PDF, and confirms the GenAI disclosure.
+
+\begin{thebibliography}{9}
+\bibitem{hoffmann2024} S. Hoffmann, W. Lasarov, H. Reimers and M. Trabandt. 2024. Carbon footprint tracking apps. \emph{Journal of Cleaner Production} 434, 139981. DOI: 10.1016/j.jclepro.2023.139981.
+\bibitem{lasarov2024} W. Lasarov, S. Hoffmann, R. Mai and J. Schleich. 2024. Carbon footprint tracking apps: the spillover effects of feedback and goal-activating appeals. \emph{Ecological Economics} 226, 108354. DOI: 10.1016/j.ecolecon.2024.108354.
+\bibitem{brynjarsdottir2012} H. Brynjarsdottir, M. Hakansson, J. Pierce, E. Baumer, C. DiSalvo and P. Sengers. 2012. Sustainably unpersuaded: How persuasion narrows our vision of sustainability. In \emph{CHI '12}. ACM, 947--956. DOI: 10.1145/2207676.2208539.
+\bibitem{lee2021} J. Lee, O. Taherzadeh and K. Kanemoto. 2021. The scale and drivers of carbon footprints in households, cities and regions across India. \emph{Global Environmental Change} 66, 102205. DOI: 10.1016/j.gloenvcha.2020.102205.
+\bibitem{mohanty2023} V. Mohanty, A. Filipowicz, N. Bravo, S. Carter and D. A. Shamma. 2023. Save a tree or 6 kg of CO2? In \emph{CHI '23}. ACM. DOI: 10.1145/3544548.3580675.
+\bibitem{shi2021} S. Shi and J. Yin. 2021. Global research on carbon footprint: A scientometric review. \emph{Environmental Impact Assessment Review} 89, 106571. DOI: 10.1016/j.eiar.2021.106571.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,78 @@
+
+# Changelog
+
+## 2026-11-02 — foundation rebuild
+
+- Replaced the GitLab template README with a project-specific entry point.
+- Added the project index and official requirements summary based on the supplied
+  COMP2300 specification.
+- Established the canonical documentation layout and recorded current evidence
+  gaps without converting proposals into historical claims.
+- Created root D2–D7 deliverable workspaces. D2 now contains a substantive
+  conceptual-design draft, low-fidelity prototype, LaTeX report source, future
+  meeting agendas, student-owned reflection templates and review controls.
+- Added D3 evaluation/architecture/project planning and D4–D7 implementation,
+  testing, quality-gate and evaluation planning artefacts.
+- Verified D2 prototype JavaScript syntax, local HTTP asset serving and Markdown
+  links. LaTeX compilation remains unverified because no compiler is installed.
+
+## 2026-11-03 — staged review build
+
+- Added the canonical `application/` Java/JavaFX review build, domain model,
+  local store, explicit action rules, UI shell, Maven configuration and test sources.
+- Added D2–D7 integrated report handovers, growth-stage map, D3 evaluation
+  materials, D5 boundary template, D6 release checklist and D7 data schema.
+- Direct JavaFX compilation and the five-check core smoke passed; Maven and
+  graphical verification remain pending because Maven/desktop execution was not
+  available in the audit shell.
+- Updated traceability, risks, ownership and handover records to reflect the new
+  review build without claiming student approval, participant findings or commits.
+
+## 2026-11-03 — Footprint Lens quality pass
+
+- Renamed the user-facing product to **Footprint Lens** and recorded the naming
+  rationale and alternatives in `docs/product-name-decision.md`.
+- Revised the D2 prototype so P2 is a universal result route, P3–P6 have explicit
+  recovery paths, protected choices disable inappropriate actions, category units
+  cannot be mismatched, and the full D1 category set is represented.
+- Added pure-logic tests, a seven-panel structure contract check and a manual
+  browser scenario matrix for the low-fidelity prototype.
+- Renamed the canonical JavaFX entry class to `FootprintLensApp` and added legacy
+  store-header compatibility while writing the new product header.
+- Added the separate forensic audit, official compliance matrix, D1-to-D2
+  traceability, six-month orchestration plan, council workspace and explicitly
+  labelled simulated/reconstructed meeting, review, reflection and register packs.
+- Tightened factor provenance, metric-safe totals, store-load safety, JavaFX form
+  accessibility and D7 sample-threshold analysis after council review findings.
+- Recorded the two returned AI council reviews, the third-session overload failure,
+  Astra's source audit, preserved disagreements and issued a conditional team-review verdict.
+
+## 2026-11-03 — re-orchestration pass
+
+- Added the complete D2 interaction inventory and concept-sketch/diagram pack.
+- Added learning-outcomes registers, version learning history, deliverable
+  learning summaries and individual learning drafts.
+- Added deliverable/version/defect change logs and a Word-compatible output plan.
+- Added explicit SWOT decision material and the second council pass, with the
+  failed Arnav subagent retry recorded honestly and a labelled fallback review.
+
+## 2026-11-03 — council repair pass
+
+- Strictly reject malformed CSV quoting, invalid boolean fields and mismatched
+  current/legacy row schemas; add regression coverage for source preservation.
+- Add a documented 1,000,000 quantity boundary and aggregate exact values before
+  rounding totals; direct JavaFX compilation and the expanded 8-check smoke pass.
+- Remove prefilled factor fixtures from the JavaFX input form and add an isolated
+  `footprint.lens.store` path for controlled review runs.
+- Make browser new-record and category-change routes clear stale quantities;
+  replace the disabled unit select with a semantic read-only output; add skip,
+  error-focus and focus-visible accessibility controls.
+- Make JavaFX action controls selection-aware, protected-choice aware, wrapped and
+  scrollable; document that action choices are session-only in this review build.
+- Complete the fallback-reviewed council records, cross-examination, self-review,
+  peer-review matrix and final verdict in `docs/council/`.
+- Latest verification: D2 7/7 tests, structure/syntax pass, D7 4/4 tests,
+  direct JavaFX compile, core smoke 10/10, and Markdown link audit 183/0.
+
+Future entries must describe material changes with a date, evidence reference and
+verification status. Formatting-only edits do not belong here.

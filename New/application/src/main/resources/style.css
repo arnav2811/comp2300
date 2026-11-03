@@ -1,0 +1,13 @@
+.root { -fx-font-size: 14px; }
+.app-root { -fx-background-color: #f7faf8; }
+.header { -fx-background-color: #176b52; }
+.title { -fx-text-fill: white; }
+.subtitle { -fx-text-fill: #e3f5ed; }
+.status-bar { -fx-padding: 9px 18px; -fx-background-color: #e7f0eb; -fx-text-fill: #24493a; }
+.stat-card { -fx-background-color: white; -fx-border-color: #d7e5dd; -fx-border-radius: 8px; -fx-background-radius: 8px; }
+.stat { -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #176b52; }
+.muted { -fx-text-fill: #50635a; }
+.callout { -fx-padding: 14px 24px 4px 24px; -fx-text-fill: #355548; }
+.primary-button { -fx-background-color: #176b52; -fx-text-fill: white; }
+.text-area { -fx-font-family: "System"; }
+.tab-pane { -fx-background-color: #f7faf8; }
