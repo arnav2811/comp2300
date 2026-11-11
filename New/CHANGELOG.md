@@ -56,6 +56,14 @@
 - Added explicit SWOT decision material and the second council pass, with the
   failed Arnav subagent retry recorded honestly and a labelled fallback review.
 
+## 2026-11-12 — D2 distinction-grade conceptual design & TikZ flowcharts pass
+
+- Upgraded `D2/report/main.tex` with native TikZ vector flowcharts for the ideation funnel, Concept A (Contextual Choice Coach), Concept B (Household Commons Board), and Concept C (Quiet-Week Action Cards).
+- Added dedicated technical specification `D2/report/design-concepts-and-user-stories.tex` containing modular standalone LaTeX source for concepts, flowcharts, decision matrices, and user stories.
+- Expanded user stories into a full 17-item MoSCoW register (Must, Should, Could, and explicit Won't-have boundaries) with Given-When-Then acceptance criteria linked to personas Aanya, Rohan, and Meera.
+- Integrated a 5-dimension Multi-Criteria Decision Matrix (MCDM) and competitor novelty analysis table into both LaTeX reports and `concepts-and-diagrams.md`.
+- Synchronized `D2/conceptual-design-working.md`, `D2/rubric-matrix.md`, and `D2/report.md` to reflect Distinction (80--90%+) readiness.
+
 ## 2026-11-12 — D2 prototype interaction & navigation repair pass
 
 - Fixed journey sidebar dead-lock: allowed direct navigation to P1 (Describe it) and P6 (Shared total) without blocking on null quantity.

@@ -10,14 +10,34 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, fit, backgrounds, decorations.pathreplacing}
 
 \definecolor{brand}{HTML}{176B52}
+\definecolor{brandlight}{HTML}{E8F4F0}
+\definecolor{branddark}{HTML}{0E4D3B}
 \definecolor{muted}{HTML}{5F716B}
+\definecolor{accent}{HTML}{D97706}
+\definecolor{warningbg}{HTML}{FFFBEB}
+\definecolor{alertred}{HTML}{B91C1C}
+
 \hypersetup{colorlinks=true,linkcolor=brand,urlcolor=brand,citecolor=brand}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.55em}
 \newcommand{\status}[1]{\textbf{\color{brand}[#1]}}
 \newcommand{\code}[1]{\texttt{#1}}
+
+% TikZ Flowchart Styles
+\tikzset{
+  flowbox/.style = {rectangle, rounded corners=3pt, draw=brand, fill=brandlight, minimum width=2.6cm, minimum height=0.9cm, text centered, text width=2.5cm, font=\footnotesize\bfseries},
+  flowproc/.style = {rectangle, rounded corners=2pt, draw=brand!80, fill=white, minimum width=2.5cm, minimum height=0.8cm, text centered, text width=2.4cm, font=\scriptsize},
+  flowdec/.style = {diamond, aspect=1.8, draw=brand, fill=warningbg, minimum width=2.2cm, minimum height=0.8cm, text centered, text width=1.9cm, font=\scriptsize\bfseries},
+  flowalert/.style = {rectangle, rounded corners=3pt, draw=alertred, fill=alertred!10, minimum width=2.5cm, minimum height=0.8cm, text centered, text width=2.4cm, font=\scriptsize\bfseries},
+  flowterminal/.style = {rectangle, rounded corners=8pt, draw=branddark, fill=branddark, text=white, minimum width=2.4cm, minimum height=0.8cm, text centered, text width=2.3cm, font=\scriptsize\bfseries},
+  flowarrow/.style = {thick, -{Stealth[length=2.2mm]}, draw=brand},
+  backarrow/.style = {thick, dashed, -{Stealth[length=2.2mm]}, draw=muted},
+  alertarrow/.style = {thick, -{Stealth[length=2.2mm]}, draw=alertred}
+}
 
 \title{\textbf{Footprint Lens: Contextual Choice Coach}\\[0.4em]
   \large COMP2300 Deliverable 2: Conceptual Design Report\\
@@ -30,7 +50,7 @@
 \maketitle
 
 \begin{abstract}
-\noindent Deliverable 2 presents the conceptual design for \textbf{Footprint Lens}, an interactive system developed for COMP2300 Topic 1. Grounded in our Deliverable 1 empirical findings, the design addresses the core challenge of carbon footprint awareness and reduction within urban Indian households. We report a divergent ideation process yielding eight response families, synthesized into three distinct conceptual models: the \emph{Contextual Choice Coach} (Concept A), the \emph{Household Commons Board} (Concept B), and the \emph{Quiet-Week Action Cards} (Concept C). Through a structured multi-criteria decision analysis evaluating stakeholder fit, feasibility, and risk boundaries, Concept A was selected for prototyping. We present a formal set of small user stories structured across epics, personas, and MoSCoW priorities with testable acceptance criteria. Finally, we document an editable, accessible, low-fidelity prototype spanning seven key interaction states (P0--P6), prove its technical feasibility without speculative machine learning, establish its novelty against existing market tools, and outline a rigorous usability evaluation plan.
+\noindent Deliverable 2 presents the conceptual design for \textbf{Footprint Lens}, an interactive software system designed for the COMP2300 Topic 1 challenge. Grounded in empirical findings from Deliverable 1, the design addresses the core challenge of carbon footprint awareness and reduction within urban Indian households. We present a divergent ideation process yielding eight distinct response families, synthesized into three distinct conceptual models: the \emph{Contextual Choice Coach} (Concept A), the \emph{Household Commons Board} (Concept B), and the \emph{Quiet-Week Action Cards} (Concept C). Through an objective multi-criteria decision analysis evaluating stakeholder fit, feasibility, and evidence boundaries, Concept A was selected for prototyping. We document formal small user stories grouped by epics, mapped to explicit personas, and prioritized across the full MoSCoW spectrum with testable Given-When-Then acceptance criteria. Finally, we provide professional vector flowcharts and wireframe layouts of our seven-state interactive prototype (P0--P6), prove its technical feasibility without speculative machine learning, establish its novelty against existing market tools, and define an ethical user evaluation protocol.
 \end{abstract}
 
 \hrule
@@ -39,9 +59,9 @@
 \section{Introduction, Problem Framing and Design Principles}
 
 \subsection{Context and Problem Statement}
-The COMP2300 Topic 1 brief requires an interactive tool to assist people in understanding activities that impact their carbon footprint and evaluating realistic reduction choices across energy, transport, food, waste, and water. Deliverable 1 established that urban Indian students, young professionals, and multi-generational households face acute structural barriers: split-incentive tenancy, unmetered communal water/electricity bills, extreme seasonal heat, and strict safety constraints (e.g., night-time commutes for shift workers) \cite{lee2021}. 
+The official COMP2300 Topic 1 specification requires an interactive system that helps users understand everyday lifestyle routines affecting their carbon footprint and evaluate feasible reduction choices across transport, home energy, food, waste, and water. Deliverable 1 established that urban Indian students, young professionals, and multi-generational families encounter structural tensions absent in western carbon tracking tools: split-incentive tenancy, unmetered communal bills, extreme seasonal heat, and non-negotiable safety constraints (such as night-time travel curfews for shift workers) \cite{lee2021}. 
 
-Mainstream carbon calculators typically calculate raw emissions using non-transparent western conversion factors, issue moralistic scoring, or suggest impractical lifestyle changes \cite{brynjarsdottir2012}. Grounded in our D1 thematic synthesis (semantic themes S1--S3 and latent themes L1--L3), our guiding Job to Be Done (JTBD) is:
+Existing consumer tools predominantly rely on global conversion factors, issue preachy moralistic scores, or suggest impractical lifestyle changes \cite{brynjarsdottir2012}. Grounded in our D1 thematic synthesis (semantic themes S1--S3 and latent themes L1--L3), our guiding Job to Be Done (JTBD) is:
 \begin{quote}
 \itshape
 When I want to understand how my everyday routines and household habits affect the environment, I want to see which activities matter most in terms I can picture and which realistic alternatives are open to me, so that I can make changes that fit my budget, safety, rota, and shared home without being misled, lectured, or blamed for constraints I cannot control.
@@ -51,29 +71,53 @@ When I want to understand how my everyday routines and household habits affect t
 To preserve rigorous traceability to our D1 empirical baseline, the system adheres to five fundamental design principles:
 \begin{enumerate}[label=\textbf{DP\arabic*.},leftmargin=*]
   \item \textbf{Transparent Provenance (S1, E2):} Every numeric emission estimate must explicitly expose its formula, activity quantity, conversion factor, reference year, geographic applicability, and evidence boundary. Where no verified India-specific factor exists, the system must show an \emph{estimate unavailable} state rather than fabricating a number.
-  \item \textbf{Constraint-Aware Protection (L3, E3):} Necessary routines driven by personal safety, night curfews, medical needs, or extreme weather must be flaggable as \emph{protected}, immediately disabling punitive advice or moralistic judgment.
+  \item \textbf{Constraint-Aware Protection (L3, E3):} Necessary routines driven by personal safety, night curfews, medical cooling, or tenancy rules must be flaggable as \emph{protected}, immediately disabling punitive advice or moralistic judgment.
   \item \textbf{Low-Burden, Two-Way Navigation (S3, E5):} Core estimation must require $\le 3$ primary decisions ($\le 60$ seconds). Users must be able to explore assumptions or backtrack without destructive state loss.
   \item \textbf{Communal Boundary Integrity (L1/L2, E7):} Shared utilities (e.g., central geysers, air conditioning, delivery packaging) must be displayed as collective household totals and never artificially partitioned into an individual's personal score without verified sub-metering.
-  \item \textbf{Descriptive Representation for Circular Habits (S2, E4):} Indigenous Indian conservation practices (e.g., ragpickers/kabadiwala recycling, bucket baths, appliance repair) must be acknowledged descriptively without claiming unverified carbon offsets.
+  \item \textbf{Descriptive Representation for Circular Habits (S2, E4):} Indigenous Indian conservation practices (e.g., kabadiwala recycling, bucket baths, appliance repair) must be acknowledged descriptively without claiming unverified carbon offsets.
 \end{enumerate}
 
 \section{Ideation Process and Response Families}
 
-To prevent premature fixation on a standard dashboard interface, the team executed a structured divergent ideation workshop utilizing the \emph{Crazy Eights} and \emph{10-plus-10} design techniques. Ideation focused on addressing the tensions identified in D1 personas: Persona 1 (Aanya, university student in a shared flat), Persona 2 (Rohan, night-shift IT professional with safety constraints), and Persona 3 (Meera, manager of a multi-generational household).
+To prevent premature fixation on a standard dashboard interface, the team executed a structured divergent ideation workshop utilizing the \emph{Crazy Eights} and \emph{10-plus-10} design techniques. Ideation focused on resolving the tensions identified in our D1 personas: \textbf{Persona 1 (Aanya)}, a university student in a shared flat with unmetered utilities; \textbf{Persona 2 (Rohan)}, a night-shift IT professional with strict nocturnal travel constraints; and \textbf{Persona 3 (Meera)}, managing a multi-generational household budget.
 
-The divergent phase produced 32 raw design responses, which were affinity-clustered into eight coherent \textbf{response families}:
-\begin{enumerate}[label=(\arabic*),leftmargin=*]
-  \item \textbf{Contextual Explain-and-Compare Journey:} Micro-interaction connecting single activities to transparent assumptions and realistic substitutions.
-  \item \textbf{Household Commons Board:} Shared living room display for coordinating communal resource use without interpersonal blame.
-  \item \textbf{Quiet-Week Action Cards:} Minimalist weekly decision prompts tailored to time constraints and shift schedules.
-  \item \textbf{Local Travel and Safety Explorer:} Multi-modal transport comparator prioritizing female safety and weather realities over raw carbon.
-  \item \textbf{Delivery and Packaging Friction Reducer:} Tracker assessing hyper-local e-commerce packaging routines.
-  \item \textbf{Assumptions and Factor Audit Explorer:} Deep-dive analytical view for evidence-conscious users verifying data sources.
-  \item \textbf{Rota-Aware Appliance Planner:} Scheduler shifting heavy appliance use (washing machine, geyser) around peak grid carbon intensity.
-  \item \textbf{Offline Household Conversation Cards:} Physical/card-based discussion prompts for joint decision-making between generations.
-\end{enumerate}
+The divergent phase produced 32 raw design responses, which were affinity-clustered into eight coherent \textbf{response families} across interaction models (Figure~\ref{fig:ideation_funnel}):
 
-From these eight families, the team synthesized three distinct concepts representing fundamentally different primary interaction models for detailed analysis.
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  node distance=0.6cm and 0.8cm,
+  funnel/.style={rectangle, rounded corners=4pt, draw=brand, fill=brandlight, minimum width=14cm, minimum height=0.8cm, text centered, font=\small\bfseries},
+  subcluster/.style={rectangle, rounded corners=2pt, draw=muted, fill=white, minimum width=3.2cm, minimum height=0.7cm, text centered, text width=3.0cm, font=\scriptsize},
+  conceptbox/.style={rectangle, rounded corners=4pt, draw=branddark, fill=brand!20, minimum width=4.3cm, minimum height=1.1cm, text centered, text width=4.1cm, font=\footnotesize\bfseries},
+  arrow/.style={thick, -{Stealth[length=2.2mm]}, draw=brand}
+]
+  \node[funnel] (stage1) {Stage 1: Divergent Problem Exploration (32 Raw Ideas across Personas P1--P3)};
+  
+  \node[subcluster, below left=0.6cm and -0.2cm of stage1] (rf1) {1. Explain \& Compare Journey};
+  \node[subcluster, right=0.3cm of rf1] (rf2) {2. Household Commons Board};
+  \node[subcluster, right=0.3cm of rf2] (rf3) {3. Quiet-Week Action Cards};
+  \node[subcluster, right=0.3cm of rf3] (rf4) {4. Travel \& Safety Explorer};
+  
+  \node[subcluster, below=0.3cm of rf1] (rf5) {5. Packaging Friction Reducer};
+  \node[subcluster, right=0.3cm of rf5] (rf6) {6. Assumptions Audit Explorer};
+  \node[subcluster, right=0.3cm of rf6] (rf7) {7. Rota-Aware Scheduler};
+  \node[subcluster, right=0.3cm of rf7] (rf8) {8. Offline Conversation Cards};
+  
+  \node[funnel, below=1.6cm of stage1] (stage2) {Stage 2: Synthesis into 3 Distinct Interaction Paradigms};
+  
+  \node[conceptbox, below left=0.6cm and -0.4cm of stage2] (ca) {\textbf{Concept A: Choice Coach}\\(Micro-decision checkpoint; contextual provenance)};
+  \node[conceptbox, right=0.5cm of ca] (cb) {\textbf{Concept B: Commons Board}\\(Communal shared display; consensus dialogue)};
+  \node[conceptbox, right=0.5cm of cb] (cc) {\textbf{Concept C: Quiet Cards}\\(Asynchronous constraint filter; low-friction nudges)};
+
+  \draw[arrow] (stage1) -- (stage2);
+  \draw[arrow] (stage2.south -| ca.north) -- (ca.north);
+  \draw[arrow] (stage2.south -| cb.north) -- (cb.north);
+  \draw[arrow] (stage2.south -| cc.north) -- (cc.north);
+\end{tikzpicture}
+\caption{Ideation Funnel: From 32 Raw Concepts to 8 Response Families and 3 Distinct Paradigms}
+\label{fig:ideation_funnel}
+\end{figure}
 
 \section{Three Distinct Conceptual Designs}
 
@@ -82,74 +126,105 @@ From these eight families, the team synthesized three distinct concepts represen
 
 \begin{figure}[ht]
 \centering
-\begin{verbatim}
-+------------------+     +-------------------+     +-------------------------+
-| P0: Entry        |     | P1: Quantity      |     | P2: Contextual Result   |
-| Activity, Scope, | --> | Numerical Input,  | --> | Estimate / Unavailable, |
-| Protected Flag   |     | Automatic Unit    |     | Familiar Comparison     |
-+------------------+     +-------------------+     +-------------------------+
-                                                                |
-                               +--------------------------------+-------------------------------+
-                               |                                |                               |
-                               v                                v                               v
-                   +-----------------------+        +-----------------------+       +-----------------------+
-                   | P3: Assumptions       |        | P4: Action Plan       |       | P6: Shared Boundary   |
-                   | Factor, Year, Region, |        | Choose / Defer /      |       | Household total !=    |
-                   | Formula, Provenance   |        | Dismiss (Constraint)  |       | Personal attribution  |
-                   +-----------------------+        +-----------------------+       +-----------------------+
-\end{verbatim}
-\caption{Conceptual Architecture of Concept A (Contextual Choice Coach)}
+\begin{tikzpicture}[node distance=0.7cm and 0.6cm]
+  \node[flowbox] (p0) {P0: Entry \& Scope\\{\scriptsize Category, Scope, Protected Flag}};
+  \node[flowbox, right=0.8cm of p0] (p1) {P1: Quantity Input\\{\scriptsize Category-owned unit, Validation}};
+  \node[flowbox, right=0.8cm of p1] (p2) {P2: Contextual Result\\{\scriptsize Numeric or Unavailable; Context}};
+  
+  \node[flowproc, below left=1.2cm and -0.3cm of p2] (p3) {P3: Assumptions\\{\scriptsize Factor, Source, Year, Formula}};
+  \node[flowdec, below=1.2cm of p2] (p4dec) {P4: Action Check\\{\scriptsize Protected?}};
+  \node[flowproc, below right=1.2cm and -0.3cm of p2] (p6) {P6: Shared Total\\{\scriptsize Communal Boundary Protection}};
+  
+  \node[flowalert, below left=0.8cm and -0.2cm of p4dec] (p4prot) {Protected Notice\\{\scriptsize Action disabled; no penalty}};
+  \node[flowproc, below right=0.8cm and -0.2cm of p4dec] (p4act) {Action Decision\\{\scriptsize Choose / Defer / Not Feasible}};
+  \node[flowterminal, right=0.8cm of p6] (p5) {P5: Unknown Factor\\{\scriptsize Descriptive record preserved}};
+
+  \draw[flowarrow] (p0) -- node[above, font=\tiny] {Begin} (p1);
+  \draw[flowarrow] (p1) -- node[above, font=\tiny] {Enter} (p2);
+  \draw[backarrow] (p1.south) to[bend left=20] node[below, font=\tiny] {Back} (p0.south);
+  \draw[backarrow] (p2.north) to[bend right=20] node[above, font=\tiny] {Edit Quantity} (p1.north);
+  
+  \draw[flowarrow] (p2) -- (p3);
+  \draw[flowarrow] (p2) -- (p4dec);
+  \draw[flowarrow] (p2) -- (p6);
+  \draw[flowarrow] (p2) to[bend left=25] node[above, font=\tiny] {Unavailable} (p5);
+  
+  \draw[alertarrow] (p4dec) -| node[above, font=\tiny] {Yes} (p4prot);
+  \draw[flowarrow] (p4dec) -| node[above, font=\tiny] {No} (p4act);
+  
+  \draw[backarrow] (p3.north) to[bend left=15] node[left, font=\tiny] {Back} (p2.south west);
+  \draw[backarrow] (p6.north) to[bend right=15] node[right, font=\tiny] {Back} (p2.south east);
+  \draw[backarrow] (p5.south) to[bend left=30] node[below, font=\tiny] {New Routine} (p0.south);
+\end{tikzpicture}
+\caption{Professional Flowchart: Concept A Contextual Choice Coach Interaction Model}
+\label{fig:concept_a_flow}
 \end{figure}
 
-\textbf{Mechanics:} The user logs a single routine (e.g., electricity, water, commuting). The system displays a dual-output card pairing an illustrative carbon value with a familiar, non-carbon contextual metric (e.g., INR electricity cost or 15-litre bucket counts). Crucially, the result panel serves as a trust checkpoint: users can inspect full data provenance (P3), review an eligible next step tailored to their constraints (P4), or examine communal household boundaries (P6). Unsupported categories remain visible as descriptive records without fabricated numerical scores.
+\textbf{Mechanics \& Walkthrough:} Concept A (Figure~\ref{fig:concept_a_flow}) guides the user through single, bite-sized routine checkpoints. On P0, the user selects an activity, declares personal or household scope, and can flag the routine as \emph{protected}. On P1, quantity is entered with automatic unit ownership. On P2, the user receives an illustrative estimate alongside a familiar non-carbon contextual reference (e.g., INR electricity cost or 15-litre bucket counts). P2 acts as a universal router: users can inspect full data provenance (P3), consider an eligible action (P4), review the shared household boundary (P6), or view descriptive reasons for missing factors (P5).
 
-\textbf{Strengths \& Risks:} Directly resolves D1's tension between abstract carbon numbers and user action. Highly feasible in desktop JavaFX. The primary risk is false precision if illustrative factors are misinterpreted; mitigated by explicit provenance labelling.
+\textbf{Persona Scenario (Rohan, Shift Worker):} Rohan logs late-night auto-rickshaw travel (15 km). Recognizing night safety as non-negotiable, he checks ``Mark as protected''. Upon viewing P4, the system disables substitution demands (e.g., ``Take the bus'') and confirms: ``\emph{Action decisions are disabled because this activity is marked protected.}'' Rohan is validated rather than penalized.
 
 \subsection{Concept B: Household Commons Board}
 \textbf{Interaction Paradigm:} \emph{Communal coordination and conversational consensus.}
 
 \begin{figure}[ht]
 \centering
-\begin{verbatim}
-+-----------------------------------------------------------------------------------------------+
-| HOUSEHOLD COMMONS DISPLAY (Shared Living Area / Tablet Hub)                                   |
-|                                                                                               |
-|  [Communal Resource Cards]                  [Weekly Household Target]                         |
-|  * Home Geyser: 142 kWh (Shared)            "Move 1 AC hour/night to ceiling fan"             |
-|  * Water Tanker: 3,200 Litres (Shared)      Status: In Discussion                             |
-|                                                                                               |
-|  [Dialogue & Action Prompts]                [Optional Consented Personal View]                |
-|  "Discuss: Shift water heating to solar"    Pin-protected individual view;                    |
-|  Actions: [Agree Plan] [Defer] [Table]      explicitly requires personal consent.             |
-+-----------------------------------------------------------------------------------------------+
-\end{verbatim}
-\caption{Conceptual Layout of Concept B (Household Commons Board)}
+\begin{tikzpicture}[node distance=0.7cm and 0.8cm]
+  \node[flowbox] (meters) {Communal Utility Input\\{\scriptsize Whole-flat meter \& bills}};
+  \node[flowbox, right=0.8cm of meters] (agg) {Resource Aggregation\\{\scriptsize Categorize communal totals}};
+  \node[flowbox, right=0.8cm of agg] (display) {Shared Living Area Display\\{\scriptsize Wall tablet in common area}};
+  
+  \node[flowdec, below=1.0cm of display] (dialogue) {Communal Dialogue\\{\scriptsize Discuss joint target?}};
+  \node[flowproc, below left=0.8cm and -0.2cm of dialogue] (target) {Adopt Shared Target\\{\scriptsize e.g. Pre-cool lounge before peak}};
+  \node[flowproc, below right=0.8cm and -0.2cm of dialogue] (tabled) {Defer / Table Plan\\{\scriptsize Retain routine without friction}};
+  
+  \node[flowalert, right=0.8cm of dialogue] (optin) {Opt-In Private Sub-View\\{\scriptsize PIN-protected; voluntary only}};
+
+  \draw[flowarrow] (meters) -- (agg);
+  \draw[flowarrow] (agg) -- (display);
+  \draw[flowarrow] (display) -- (dialogue);
+  \draw[flowarrow] (dialogue) -| node[above, font=\tiny] {Agreed} (target);
+  \draw[flowarrow] (dialogue) -| node[above, font=\tiny] {Dissent} (tabled);
+  \draw[backarrow] (display) -| node[above, font=\tiny] {Explicit Consent} (optin);
+\end{tikzpicture}
+\caption{Professional Flowchart: Concept B Household Commons Board Interaction Model}
+\label{fig:concept_b_flow}
 \end{figure}
 
-\textbf{Mechanics:} Designed for a shared tablet in communal living spaces. It aggregates whole-home utility data into shared resource cards. Instead of individual scorecards, it presents joint action proposals for household discussion. Individual views are strictly opt-in and pin-protected to prevent flatmates or parents from policing each other.
+\textbf{Mechanics \& Walkthrough:} Concept B (Figure~\ref{fig:concept_b_flow}) is designed for a shared tablet in communal living spaces. It aggregates whole-home utility data into shared resource cards (e.g., central geyser, water tanker delivery). Instead of individual scorecards, it presents joint action proposals for household discussion. Individual personal views are strictly opt-in and pin-protected to prevent flatmates or parents from policing each other.
 
-\textbf{Strengths \& Risks:} Directly addresses flatshare friction (L1) and multi-generational dynamics (L2). However, establishing verified consent boundaries in software is complex, and physical ambient displays impose high hardware constraints for an academic MVP.
+\textbf{Persona Scenario (Aanya, Student Flatshare):} Aanya lives with three flatmates. They share a central geyser and refrigerator. Concept B displays the communal 320 kWh bill. Instead of attempting to divide the bill into four fraught individual shares, the display suggests: ``\emph{Shift geyser heating 30 minutes earlier to utilize solar grid hours.}'' The flatmates agree over dinner without interpersonal conflict.
 
 \subsection{Concept C: Quiet-Week Action Cards}
 \textbf{Interaction Paradigm:} \emph{Constraint-first asynchronous nudges.}
 
 \begin{figure}[ht]
 \centering
-\begin{verbatim}
-+-----------------------+     +-----------------------------------------------------------------+
-| Constraint Filter     |     | Weekly Card Stack (Maximum 2 Cards per Week)                    |
-| [x] Night Shift Rota  | --> |                                                                 |
-| [x] Shared Kitchen    |     | Card 1: Shift geyser pre-heat by 30 mins before peak tariff     |
-| [ ] Solo Commute      |     | Reason: Matches your evening shift rota.                        |
-+-----------------------+     | Actions: [Accept Routine]   [Defer to Next Week]   [Dismiss]    |
-                              +-----------------------------------------------------------------+
-\end{verbatim}
-\caption{Conceptual Flow of Concept C (Quiet-Week Action Cards)}
+\begin{tikzpicture}[node distance=0.7cm and 0.8cm]
+  \node[flowbox] (filter) {Constraint Profile Setup\\{\scriptsize Shift rota, curfew, heatwave alert}};
+  \node[flowproc, right=0.8cm of filter] (engine) {Deterministic Rule Engine\\{\scriptsize Filter unfeasible suggestions}};
+  \node[flowbox, right=0.8cm of engine] (cards) {Weekly Action Card Stack\\{\scriptsize Maximum 2 cards per week}};
+  
+  \node[flowdec, below=1.0cm of cards] (decision) {User Decision\\{\scriptsize Choose / Defer / Dismiss}};
+  \node[flowproc, below left=0.8cm and -0.3cm of decision] (accept) {Adopt Routine\\{\scriptsize Stored in weekly rota}};
+  \node[flowproc, below=0.8cm of decision] (defer) {Postpone\\{\scriptsize Snooze for next cycle}};
+  \node[flowproc, below right=0.8cm and -0.3cm of decision] (dismiss) {Not Feasible\\{\scriptsize Suppress similar prompts}};
+
+  \draw[flowarrow] (filter) -- (engine);
+  \draw[flowarrow] (engine) -- (cards);
+  \draw[flowarrow] (cards) -- (decision);
+  \draw[flowarrow] (decision) -| (accept);
+  \draw[flowarrow] (decision) -- (defer);
+  \draw[flowarrow] (decision) -| (dismiss);
+  \draw[backarrow] (accept.south) to[bend left=25] node[below, font=\tiny] {Weekly Reflection} (filter.south);
+\end{tikzpicture}
+\caption{Professional Flowchart: Concept C Quiet-Week Action Cards Interaction Model}
+\label{fig:concept_c_flow}
 \end{figure}
 
-\textbf{Mechanics:} The user inputs their external operational constraints (e.g., work shifts, heatwave alerts, exam periods). The system suppresses continuous daily logging and delivers a maximum of two inspectable, rule-based recommendation cards per week. Cards explain why they were selected and allow users to accept, postpone, or dismiss without penalty.
+\textbf{Mechanics \& Walkthrough:} Concept C (Figure~\ref{fig:concept_c_flow}) eliminates continuous daily logging. The user inputs their external operational constraints once. The system suppresses daily prompts and delivers a maximum of two inspectable, rule-based recommendation cards per week. Cards explicitly declare why they were selected and allow users to accept, postpone, or dismiss without penalty.
 
-\textbf{Strengths \& Risks:} Minimizes cognitive fatigue (S3). However, recommendation logic risks appearing arbitrary or over-personalized, and without activity logging, users cannot evaluate the quantitative scale of their routines.
+\textbf{Persona Scenario (Meera, Family Manager):} During peak summer, Meera inputs heatwave constraints. Concept C delivers one card: ``\emph{Use residual microwave heat for evening defrosting rather than running the tap.}'' Meera accepts it with one tap; the app sleeps for the rest of the week, respecting her busy schedule.
 
 \section{Concept Selection and Novelty Analysis}
 
@@ -246,27 +321,44 @@ The visual style deliberately avoids high-fidelity graphics, saturated palettes,
 \begin{figure}[ht]
 \centering
 \small
-\begin{verbatim}
-+-----------------------------------------------------------------------------------------------+
-| FOOTPRINT LENS: D2 Working Prototype                               [Illustrative Design Only] |
-+-----------------------------------------------------------------------------------------------+
-| Journey Nav:    | STATE P0: START A RECORD                                                    |
-| [*] P0 Start    | What would you like to understand?                                          |
-| [ ] P1 Describe | Activity Category: [ Home electricity              |v]                      |
-| [ ] P2 Result   | Who does this describe?: [ Me / my activity        |v]                      |
-| [ ] P3 Assump.  |                                                                             |
-| [ ] P4 Action   | [x] Mark as protected or necessary (safety, curfew, shift work, heat)       |
-| [ ] P5 Unavail. | Note: This category has an illustrative factor only; inspect assumptions.  |
-| [ ] P6 Shared   |                                                                             |
-|                 | [ Continue to quantity ]   [ Load illustrative example ]   [ Shared preview ] |
-| [Reset Prototype]                                                                             |
-+-----------------------------------------------------------------------------------------------+
-\end{verbatim}
+\begin{tikzpicture}[
+  wireframe/.style={rectangle, draw=branddark, fill=white, minimum width=15cm, minimum height=6.2cm, inner sep=0.3cm},
+  header/.style={rectangle, fill=branddark, text=white, minimum width=14.4cm, minimum height=0.7cm, font=\scriptsize\bfseries},
+  sidebar/.style={rectangle, fill=brandlight, draw=brand!40, minimum width=3.4cm, minimum height=4.8cm, text width=3.2cm, font=\tiny},
+  panelbox/.style={rectangle, fill=white, draw=brand!70, minimum width=10.6cm, minimum height=4.8cm, text width=10.2cm, font=\scriptsize}
+]
+  \node[wireframe] (shell) {};
+  \node[header, below=0.1cm of shell.north] (top) {FOOTPRINT LENS: D2 Working Prototype \hfill [Illustrative Design Only]};
+  \node[sidebar, below left=0.2cm and 0.1cm of top.south west, anchor=north west] (side) {
+    \textbf{Journey Route:}\\[0.4em]
+    [*] P0: Start a record\\
+    [ ] P1: Describe quantity\\
+    [ ] P2: See result\\
+    [ ] P3: Assumptions\\
+    [ ] P4: Realistic action\\
+    [ ] P5: Unknown estimate\\
+    [ ] P6: Shared total\\[0.8em]
+    \underline{[ Reset Prototype ]}
+  };
+  \node[panelbox, below right=0.2cm and 0.2cm of top.south east, anchor=north east] (mainp) {
+    \textbf{\color{brand}STATE P0: START A RECORD}\\[0.2em]
+    \textbf{What would you like to understand?}\\
+    {\tiny Choose one routine. Scope remains explicit so shared totals are not mistaken for personal footprints.}\\[0.6em]
+    \begin{tabular}{ll}
+      \textbf{Activity Category:} & [ Home electricity \hfill $\triangledown$ ] \\
+      \textbf{Scope Boundary:}    & [ Me / my activity \hfill $\triangledown$ ] \\
+    \end{tabular}\\[0.6em]
+    $\Box$ \textbf{Mark as protected or necessary} {\tiny (Safety, shift rota, medical, heatwave constraint)}\\
+    {\tiny Note: Electricity has an illustrative factor (0.716 kg/kWh); inspect assumptions on P2/P3.}\\[0.8em]
+    \fbox{\textbf{Continue to quantity}} \quad \fbox{Load illustrative example} \quad \fbox{Preview shared boundary}
+  };
+\end{tikzpicture}
 \caption{Wireframe Layout for Panel P0 (Activity Selection, Scope and Constraint Flagging)}
+\label{fig:p0_wireframe}
 \end{figure}
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{P0: Start a Record (Entry):} The user selects one of seven D1-relevant categories (\emph{electricity, water, travel, food, packaging, waste, repair}), selects personal or household scope, and can flag the routine as \emph{protected}. A pre-loaded illustrative example (168 kWh household electricity) enables reproducible assessment walkthroughs.
+  \item \textbf{P0: Start a Record (Entry):} The user selects one of seven D1-relevant categories (\emph{electricity, water, travel, food, packaging, waste, repair}), selects personal or household scope, and can flag the routine as \emph{protected}. A pre-loaded illustrative example (168 kWh household electricity) enables reproducible assessment walkthroughs (Figure~\ref{fig:p0_wireframe}).
   
   \item \textbf{P1: Describe It (Quantity Input):} Accepts numerical quantity. The unit is strictly owned and displayed by the category (e.g., kWh, litres, passenger-km, kg) via a dedicated, styled read-only \code{<output>} element to prevent incompatible calculations. Input supports decimal values and the standard keyboard \code{Enter} key. Missing, negative, or $>10^6$ values trigger immediate, non-destructive validation announcements.
   
