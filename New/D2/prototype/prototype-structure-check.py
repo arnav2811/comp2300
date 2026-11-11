@@ -21,6 +21,16 @@ assert not missing_ids, f"Missing HTML contract ids: {sorted(missing_ids)}"
 for panel in ("entry", "quantity", "result", "assumptions", "action", "unavailable", "shared"):
     assert f'data-panel="{panel}"' in html, f"Missing journey panel: {panel}"
 
+valid_panels = {"entry", "quantity", "result", "assumptions", "action", "unavailable", "shared"}
+for go_target in re.findall(r'data-go="([^"]+)"', html):
+    assert go_target in valid_panels, f"Invalid data-go target: {go_target}"
+
+for back_target in re.findall(r'data-back="([^"]+)"', html):
+    assert back_target in valid_panels, f"Invalid data-back target: {back_target}"
+
+assert 'id="shared-back-button"' in html, "Missing shared-back-button on shared panel"
+assert 'data-back="quantity"' in html, "Missing back-to-quantity option on result panel"
+
 for handler in ("validateAndContinue", "renderAssumptions", "renderAction", "renderUnavailable", "renderShared", "reset"):
     assert handler in js, f"Missing interaction handler: {handler}"
 

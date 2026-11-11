@@ -56,6 +56,18 @@
 - Added explicit SWOT decision material and the second council pass, with the
   failed Arnav subagent retry recorded honestly and a labelled fallback review.
 
+## 2026-11-12 — D2 prototype interaction & navigation repair pass
+
+- Fixed journey sidebar dead-lock: allowed direct navigation to P1 (Describe it) and P6 (Shared total) without blocking on null quantity.
+- Added non-destructive navigation: added "Edit quantity" on P2 and "Back to result" on P6 so viewing the shared total or returning to fix an input does not wipe user records.
+- Added "Record another activity" on P2 and P4 to allow complete walkthrough loops without having to reset the entire prototype.
+- Added keyboard Enter key submission on the quantity input field.
+- Fixed unit-compatibility logic: switching between categories sharing the same unit (food, packaging, waste with kg) preserves input rather than discarding it.
+- Removed premature red validation alerts when switching categories on P0.
+- Added dynamic, category-specific placeholders (e.g. 150 kWh, 120 L, 25 p-km) and styled `<output id="unit">` as a distinct read-only indicator.
+- Explicitly documented and surfaced protected-choice disabled action reasons in `#action-feedback`.
+- Expanded automated test suite (8/8 pure logic tests, contract structure check, syntax checks) and updated interaction inventory / scenario matrices.
+
 ## 2026-11-03 — council repair pass
 
 - Strictly reject malformed CSV quoting, invalid boolean fields and mismatched

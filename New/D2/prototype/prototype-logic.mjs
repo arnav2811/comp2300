@@ -114,6 +114,13 @@ export const getCategory = category => {
   return data;
 };
 
+export function isUnitCompatible(categoryA, categoryB) {
+  const dataA = CATEGORY_DATA[categoryA];
+  const dataB = CATEGORY_DATA[categoryB];
+  if (!dataA || !dataB) return false;
+  return dataA.defaultUnit === dataB.defaultUnit;
+}
+
 export function validateQuantity(rawValue) {
   const raw = String(rawValue ?? "").trim();
   if (raw === "") return { valid: false, message: "Enter a quantity before continuing." };

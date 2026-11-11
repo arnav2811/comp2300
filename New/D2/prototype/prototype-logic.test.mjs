@@ -4,6 +4,7 @@ import {
   CATEGORY_DATA,
   actionFor,
   calculateEstimate,
+  isUnitCompatible,
   validateQuantity
 } from "./prototype-logic.mjs";
 
@@ -60,4 +61,13 @@ test("category metadata exposes provenance fields for the assumptions route", ()
 test("unknown categories and invalid calculation quantities fail closed", () => {
   assert.throws(() => calculateEstimate("unknown", 4), /Unsupported category/);
   assert.throws(() => calculateEstimate("electricity", -1), /finite non-negative/);
+});
+
+test("unit compatibility correctly groups kg categories and isolates others", () => {
+  assert.equal(isUnitCompatible("food", "packaging"), true);
+  assert.equal(isUnitCompatible("food", "waste"), true);
+  assert.equal(isUnitCompatible("packaging", "waste"), true);
+  assert.equal(isUnitCompatible("electricity", "water"), false);
+  assert.equal(isUnitCompatible("electricity", "travel"), false);
+  assert.equal(isUnitCompatible("unknown", "food"), false);
 });

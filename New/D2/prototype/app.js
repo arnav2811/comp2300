@@ -5,6 +5,16 @@ import {
   validateQuantity
 } from "./prototype-logic.mjs";
 
+const CATEGORY_PLACEHOLDERS = {
+  electricity: "e.g. 150",
+  water: "e.g. 120",
+  travel: "e.g. 25",
+  food: "e.g. 5",
+  packaging: "e.g. 3",
+  waste: "e.g. 4",
+  repair: "e.g. 2"
+};
+
 const state = {
   panel: "entry",
   category: "electricity",
@@ -37,6 +47,10 @@ function show(panel, message = "") {
     const active = item.dataset.state === panel;
     item.classList.toggle("active", active);
     item.setAttribute("aria-current", active ? "step" : "false");
+    const btn = item.querySelector("button");
+    if (btn) {
+      btn.setAttribute("aria-current", active ? "step" : "false");
+    }
   });
   if (message) announce(message); else setNotice("");
   const focusTarget = document.querySelector(`[data-panel="${panel}"] h2`);
@@ -53,16 +67,29 @@ function selectedData() {
 
 function syncCategory() {
   const previousCategory = state.category;
-  state.category = $("category").value;
+  const newCategory = $("category").value;
+  state.category = newCategory;
   const data = selectedData();
-  if (previousCategory !== state.category && $("quantity").value !== "") {
+  const previousUnit = state.unit;
+  const newUnit = data.defaultUnit;
+
+  // Only clear the quantity if the units are actually incompatible
+  if (previousUnit !== newUnit && $("quantity").value !== "") {
     $("quantity").value = "";
     state.quantity = null;
-    $("validation").textContent = "Category changed. Enter a new quantity in the new unit.";
+    $("validation").textContent = "";
+    $("quantity").removeAttribute("aria-invalid");
+    $("quantity").removeAttribute("aria-errormessage");
   }
-  $("unit").textContent = data.defaultUnit;
-  $("unit-label").textContent = data.defaultUnit;
-  state.unit = data.defaultUnit;
+
+  $("unit").textContent = newUnit;
+  $("unit-label").textContent = newUnit;
+  state.unit = newUnit;
+
+  if (CATEGORY_PLACEHOLDERS[newCategory]) {
+    $("quantity").placeholder = CATEGORY_PLACEHOLDERS[newCategory];
+  }
+
   $("category-boundary").textContent = data.factorValue === null
     ? "This category is retained descriptively in the low-fidelity design."
     : "This category has an illustrative factor only; inspect its assumptions.";
@@ -74,16 +101,23 @@ function currentScopeLabel() {
 
 function renderResult() {
   const data = selectedData();
-  const estimate = calculateEstimate(state.category, state.quantity);
+  const hasQuantity = state.quantity !== null && Number.isFinite(state.quantity);
+  const estimate = hasQuantity ? calculateEstimate(state.category, state.quantity) : {
+    available: false,
+    display: "Estimate unavailable",
+    explanation: "No quantity entered"
+  };
   const protectedLabel = state.protectedChoice ? "Protected / necessary" : "Open to action review";
-  $("result-title").textContent = `${data.label} · ${state.quantity} ${state.unit}`;
+  const qtyStr = hasQuantity ? `${state.quantity} ${state.unit}` : `0 ${state.unit}`;
+
+  $("result-title").textContent = `${data.label} · ${qtyStr}`;
   $("result-card").innerHTML = `
     <div class="metric"><strong>${estimate.display}</strong><span>${estimate.available ? "illustrative result" : "quantity retained without false precision"}</span></div>
     <p>${estimate.explanation}. The result is a design fixture, not verified India-specific emissions data.</p>
     <dl class="meta-grid">
       <div><dt>Scope</dt><dd>${currentScopeLabel()}</dd></div>
       <div><dt>Choice status</dt><dd>${protectedLabel}</dd></div>
-      <div><dt>Familiar context</dt><dd>${data.comparisonLabel}: ${data.comparison(state.quantity)}</dd></div>
+      <div><dt>Familiar context</dt><dd>${data.comparisonLabel}: ${hasQuantity ? data.comparison(state.quantity) : "N/A"}</dd></div>
     </dl>
     <p class="route-hint">Choose an option below to inspect the evidence, understand the unknown state, or consider a realistic action.</p>`;
   $("unavailable-button").classList.toggle("hidden", estimate.available);
@@ -91,13 +125,16 @@ function renderResult() {
 
 function renderAssumptions() {
   const data = selectedData();
-  const estimate = calculateEstimate(state.category, state.quantity);
+  const hasQuantity = state.quantity !== null && Number.isFinite(state.quantity);
+  const estimate = hasQuantity ? calculateEstimate(state.category, state.quantity) : { available: false, explanation: "Enter a quantity to calculate" };
   const factor = data.factorValue === null ? "None configured" : data.factorLabel;
-  const formula = estimate.available ? estimate.explanation : "No numeric result is produced";
+  const formula = estimate.available ? estimate.explanation : (data.factorValue === null ? data.boundary : "No quantity entered yet");
+  const qtyDisplay = hasQuantity ? `${state.quantity} ${state.unit}` : `Not entered (default: ${state.unit})`;
+
   $("assumption-table").innerHTML = `
     <table><caption class="sr-only">Estimate assumptions</caption><thead><tr><th>Input</th><th>Current value</th><th>Evidence status</th></tr></thead><tbody>
       <tr><th>Activity</th><td>${data.label}</td><td>User selected</td></tr>
-      <tr><th>Quantity</th><td>${state.quantity} ${state.unit}</td><td>User input; not independently verified</td></tr>
+      <tr><th>Quantity</th><td>${qtyDisplay}</td><td>User input; not independently verified</td></tr>
       <tr><th>Scope</th><td>${currentScopeLabel()}</td><td>Stored as a boundary, not individual attribution</td></tr>
       <tr><th>Factor</th><td>${factor}</td><td>${data.source}</td></tr>
       <tr><th>Metric</th><td>${data.metric}</td><td>Must match the factor's stated boundary</td></tr>
@@ -111,9 +148,12 @@ function renderAction() {
   const action = actionFor(state.category, state.protectedChoice);
   $("action-card").innerHTML = `<h3>${action.title}</h3><p>${action.explanation}</p>
     <p class="decision-boundary"><strong>Decision boundary:</strong> this is a candidate plan, not evidence that emissions will fall.</p>`;
-  $("action-feedback").textContent = state.actionStatus;
   const disabled = !action.available;
   ["defer-button", "dismiss-button", "choose-button"].forEach(id => $(id).disabled = disabled);
+  if (disabled) {
+    state.actionStatus = "Action decisions are disabled because this activity is marked protected or necessary.";
+  }
+  $("action-feedback").textContent = state.actionStatus;
 }
 
 function renderUnavailable() {
@@ -129,11 +169,16 @@ function renderShared() {
     ? "Not calculated"
     : isHousehold ? `${state.quantity} ${state.unit} recorded` : "Not available from a personal record";
   $("shared-scope").textContent = currentScopeLabel();
+
+  const backBtn = $("shared-back-button");
+  if (backBtn) {
+    backBtn.classList.toggle("hidden", state.quantity === null);
+  }
 }
 
 function validateAndContinue() {
   const validation = validateQuantity($("quantity").value);
-  $("validation").textContent = validation.message;
+  $("validation").textContent = validation.valid ? "" : (validation.message || "");
   $("quantity").setAttribute("aria-invalid", String(!validation.valid));
   if (!validation.valid) {
     $("quantity").setAttribute("aria-errormessage", "validation");
@@ -179,8 +224,13 @@ function reset() {
 
 $("category").addEventListener("change", syncCategory);
 $("scope").addEventListener("change", () => { state.scope = $("scope").value; });
-$("protected").addEventListener("change", () => { state.protectedChoice = $("protected").checked; });
+$("protected").addEventListener("change", () => {
+  state.protectedChoice = $("protected").checked;
+  state.actionStatus = "";
+});
+
 $("begin-button").addEventListener("click", () => show("quantity", "Describe the known quantity; unknown is different from zero."));
+
 $("example-button").addEventListener("click", () => {
   $("category").value = "electricity";
   $("scope").value = "household";
@@ -189,16 +239,44 @@ $("example-button").addEventListener("click", () => {
   state.protectedChoice = false;
   syncCategory();
   $("quantity").value = "168";
+  state.quantity = 168;
+  state.actionStatus = "";
+  $("validation").textContent = "";
+  $("quantity").removeAttribute("aria-invalid");
+  $("quantity").removeAttribute("aria-errormessage");
   show("quantity", "Illustrative example loaded: 168 kWh household electricity. Review the assumptions before continuing.");
 });
-$("shared-button").addEventListener("click", () => { renderShared(); show("shared", "Shared activity is visible without assigning it to a person."); });
+
+$("shared-button").addEventListener("click", () => {
+  renderShared();
+  show("shared", "Shared activity is visible without assigning it to a person.");
+});
+
 $("save-button").addEventListener("click", validateAndContinue);
 $("reset-button").addEventListener("click", reset);
-$("unavailable-button").addEventListener("click", () => { renderUnavailable(); show("unavailable", "No defensible factor is configured for this category."); });
+$("unavailable-button").addEventListener("click", () => {
+  renderUnavailable();
+  show("unavailable", "No defensible factor is configured for this category.");
+});
+
+$("quantity").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    validateAndContinue();
+  }
+});
 
 document.querySelectorAll("[data-go]").forEach(button => button.addEventListener("click", () => {
   const next = button.dataset.go;
-  if (next === "entry") { startNewRecord(); return; }
+  if (next === "entry") {
+    startNewRecord();
+    return;
+  }
+  if (next === "quantity") {
+    show("quantity");
+    return;
+  }
+  if (next === "result") renderResult();
   if (next === "assumptions") renderAssumptions();
   if (next === "action") renderAction();
   if (next === "unavailable") renderUnavailable();
@@ -208,34 +286,115 @@ document.querySelectorAll("[data-go]").forEach(button => button.addEventListener
 
 document.querySelectorAll("[data-back]").forEach(button => button.addEventListener("click", () => {
   const next = button.dataset.back;
-  if (next === "result") renderResult();
+  if (next === "entry") {
+    show("entry");
+    return;
+  }
+  if (next === "quantity") {
+    show("quantity");
+    return;
+  }
+  if (next === "result") {
+    if (state.quantity === null) {
+      show("entry");
+      return;
+    }
+    renderResult();
+    show("result");
+    return;
+  }
   if (next === "action") renderAction();
+  if (next === "shared") renderShared();
   show(next);
 }));
 
-$("defer-button").addEventListener("click", () => { state.actionStatus = "Deferred. No plan was recorded in this prototype."; renderAction(); });
-$("dismiss-button").addEventListener("click", () => { state.actionStatus = "Marked not feasible. The activity remains visible and no penalty was applied."; renderAction(); });
-$("choose-button").addEventListener("click", () => { state.actionStatus = "Candidate plan chosen for this walkthrough; no completed saving is claimed."; renderAction(); });
+$("defer-button").addEventListener("click", () => {
+  state.actionStatus = "Deferred. No plan was recorded in this prototype.";
+  renderAction();
+});
+
+$("dismiss-button").addEventListener("click", () => {
+  state.actionStatus = "Marked not feasible. The activity remains visible and no penalty was applied.";
+  renderAction();
+});
+
+$("choose-button").addEventListener("click", () => {
+  state.actionStatus = "Candidate plan chosen for this walkthrough; no completed saving is claimed.";
+  renderAction();
+});
 
 document.querySelectorAll("#journey-list button").forEach(button => button.addEventListener("click", () => {
   const requested = button.closest("li").dataset.state;
-  if (requested === "entry") { startNewRecord(); return; }
-  if (state.quantity === null) {
-    show("entry", "Start a record and enter a quantity before opening this stage.");
+
+  if (requested === "entry") {
+    show("entry");
     return;
   }
-  if (requested === "quantity") { show("quantity"); return; }
-  if (requested === "result") { renderResult(); show("result"); return; }
-  if (requested === "assumptions") { renderAssumptions(); show("assumptions"); return; }
-  if (requested === "action") { renderAction(); show("action"); return; }
+
+  if (requested === "quantity") {
+    show("quantity", "Describe the known quantity; unknown is different from zero.");
+    return;
+  }
+
+  if (requested === "shared") {
+    renderShared();
+    show("shared", "Shared activity is visible without assigning it to a person.");
+    return;
+  }
+
+  // To view result, assumptions, action, or unavailable:
+  if (state.quantity === null) {
+    const rawVal = $("quantity").value.trim();
+    if (rawVal !== "") {
+      const validation = validateQuantity(rawVal);
+      if (validation.valid) {
+        state.quantity = validation.value;
+        state.unit = $("unit").textContent;
+        $("validation").textContent = "";
+        $("quantity").removeAttribute("aria-invalid");
+        $("quantity").removeAttribute("aria-errormessage");
+      } else {
+        $("validation").textContent = validation.message || "";
+        $("quantity").setAttribute("aria-invalid", "true");
+        $("quantity").setAttribute("aria-errormessage", "validation");
+        show("quantity", "Enter a valid quantity before moving forward.");
+        $("quantity").focus();
+        return;
+      }
+    } else {
+      show("quantity", "Please enter a quantity on this step before viewing results.");
+      $("quantity").focus();
+      return;
+    }
+  }
+
+  if (requested === "result") {
+    renderResult();
+    show("result");
+    return;
+  }
+
+  if (requested === "assumptions") {
+    renderAssumptions();
+    show("assumptions");
+    return;
+  }
+
+  if (requested === "action") {
+    renderAction();
+    show("action");
+    return;
+  }
+
   if (requested === "unavailable") {
     if (calculateEstimate(state.category, state.quantity).available) {
       show("result", "This record has an illustrative estimate; the unavailable-estimate branch is shown for unsupported categories.");
       return;
     }
-    renderUnavailable(); show("unavailable"); return;
+    renderUnavailable();
+    show("unavailable");
+    return;
   }
-  if (requested === "shared") { renderShared(); show("shared"); }
 }));
 
 syncCategory();

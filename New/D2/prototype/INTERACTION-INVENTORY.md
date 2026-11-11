@@ -19,20 +19,25 @@ member runs the prototype in a real browser and records browser/version/date.
 | P1-C04 | Unit output | Read-only unit text updates with category; category owns unit to prevent mismatch | Present; semantic output | Pending team walkthrough |
 | P1-C05 | Back | Returns P0 without losing current form state | Present; handler bound | Pending team walkthrough |
 | P1-C06 | Preview estimate | Valid input reaches universal P2 without saving | Present; handler bound | Pending team walkthrough |
+| P1-C07 | Quantity Enter key | Submits quantity input identically to Preview estimate | Present; handler bound | Pending team walkthrough |
 | P2-C01 | Inspect assumptions | Opens P3 with metric/source/year/geography/boundary/formula | Present; handler bound | Pending team walkthrough |
 | P2-C02 | Find realistic action | Opens P4 and renders explicit rule-based action | Present; handler bound | Pending team walkthrough |
 | P2-C03 | Unavailable explanation | Visible only for unsupported categories; opens P5 | Present; handler bound | Pending team walkthrough |
 | P2-C04 | Shared-total link | Opens P6 and reflects current scope | Present; handler bound | Pending team walkthrough |
+| P2-C05 | Edit quantity | Returns to P1 with quantity preserved for editing | Present; handler bound | Pending team walkthrough |
+| P2-C06 | Record another activity | Resets transient state and returns to P0 | Present; handler bound | Pending team walkthrough |
 | P3-C01 | Back to result | Returns P2 with quantity/state preserved | Present; handler bound | Pending team walkthrough |
 | P3-C02 | Continue to action | Opens P4 | Present; handler bound | Pending team walkthrough |
 | P4-C01 | Defer | Shows no-plan feedback and retains evidence boundary | Present; handler bound | Pending team walkthrough |
 | P4-C02 | Not feasible | Shows non-judgemental dismissal feedback | Present; handler bound | Pending team walkthrough |
 | P4-C03 | Choose plan | Shows current-plan feedback, never completed saving | Present; handler bound | Pending team walkthrough |
-| P4-C04 | Protected action state | Disables action decisions and explains protection | Pure logic test; UI contract present | Pending team walkthrough |
+| P4-C04 | Protected action state | Disables action decisions and explains protection in status feedback | Pure logic test; UI contract present | Pending team walkthrough |
+| P4-C05 | Record another activity | Resets transient state and returns to P0 | Present; handler bound | Pending team walkthrough |
 | P5-C01 | Back to result | Returns P2 without losing category/quantity | Present; handler bound | Pending team walkthrough |
 | P5-C02 | Record another activity | Returns P0 for a new route | Present; handler bound | Pending team walkthrough |
 | P6-C01 | Shared scope display | Household shows recorded total; personal shows unavailable preview | Present; handler bound | Pending team walkthrough |
 | P6-C02 | Return to start | Returns P0 without attribution | Present; handler bound | Pending team walkthrough |
+| P6-C03 | Back to result | Returns to P2 when navigated from active result without resetting | Present; handler bound | Pending team walkthrough |
 | A11Y-C01 | Journey buttons | Keyboard-focusable, visible active state and `aria-current` | Static contract passed | Pending keyboard walkthrough |
 | A11Y-C02 | State heading focus | New panel heading receives focus | Static handler present | Pending keyboard walkthrough |
 | A11Y-C03 | Error association | Quantity uses `aria-describedby` for help/error | Static contract passed | Pending screen-reader walkthrough |
