@@ -176,13 +176,16 @@ evaluation hypothesis, not a measured outcome.
 \subsection{Prototype state sketch}
 
 \begin{verbatim}
-P0 entry/scope -> P1 quantity -> P2 result
-                                  |\
-                                  | \-- P6 shared boundary
-                                  |\
-                                  |---- P3 assumptions
-                                  |---- P4 action
-                                  \---- P5 unavailable explanation
+P0 entry/scope <--> P1 quantity <--> P2 result
+      ^                                    |\
+      |                                    |<--> P6 shared boundary
+      |                                    |\
+      |                                    |<--> P3 assumptions
+      |                                    |<--> P4 action
+      |                                    \---> P5 unavailable explanation
+      |                                           |
+      \-------------------------------------------/
+                  (Record another activity)
 \end{verbatim}
 
 The full editable interaction inventory is in
