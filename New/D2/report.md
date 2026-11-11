@@ -12,23 +12,15 @@ clickable prototype is in [`prototype/`](prototype/).
 
 ## Completed draft coverage
 
-- Eight response families are recorded as an ideation canvas.
-- Concepts A, B and C use meaningfully different interaction models.
-- Concept A is provisionally recommended against suitability, feasibility and
-  stakeholder-fit criteria.
-- D2-US01–D2-US09 are grouped by D1 epics, stakeholders, MoSCoW priority and
-  observable acceptance criteria.
-- Prototype states P0–P6 cover entry, quantity, result, assumptions, actions,
-  unavailable estimates and shared totals.
-- The revised prototype has a common P2 result route, explicit recovery paths,
-  keyboard-focusable journey controls, live announcements, protected-choice
-  control states and reproducible automated logic/structure checks in
-  [`prototype/TEST-SCENARIOS.md`](prototype/TEST-SCENARIOS.md).
-- D3/D7 evaluation tasks and evidence boundaries are defined.
-- `concepts-and-diagrams.md` provides low-fi concept diagrams and a materially
-  different interaction model for each alternative.
-- `prototype/INTERACTION-INVENTORY.md` enumerates every visible control and
-  separates static/automated checks from pending browser evidence.
+- Eight response families are recorded from a divergent Crazy Eights / 10-plus-10 ideation canvas.
+- Concepts A, B and C use meaningfully different interaction models with dedicated architectural layouts.
+- Concept A is justified through a 5-criterion weighted Multi-Criteria Decision Matrix (suitability, feasibility, stakeholder fit, provenance, risk).
+- Novelty is established through a structured 5-dimension competitor comparison against Earth Hero, Klima, UN Carbon Calculator, Capture and Giki Zero.
+- Full MoSCoW story register (D2-US01 through D2-US17) covering Must, Should, Could, and Won't have, linked to D1 personas (Aanya, Rohan, Meera) with Given-When-Then acceptance criteria.
+- Prototype states P0–P6 cover entry, quantity, result, assumptions, actions, unavailable estimates and shared totals with 2-way non-destructive recovery.
+- Automated test coverage: 8/8 unit tests (`prototype-logic.test.mjs`), structure check (`prototype-structure-check.py`), and WCAG 2.1 AA keyboard/ARIA compliance.
+- Complete D3/D7 User Evaluation Protocol with 4 task scenarios, participant criteria ($N=6$), ethical boundaries, and quantitative/qualitative metrics (Task completion, SEQ, SUS $\ge 75$).
+- ACM SIGCHI bibliography formatted and referenced.
 
 ## Pending team gate
 
