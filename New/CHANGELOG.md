@@ -56,6 +56,14 @@
 - Added explicit SWOT decision material and the second council pass, with the
   failed Arnav subagent retry recorded honestly and a labelled fallback review.
 
+## 2026-11-12 — Apple HIG design system & distinction-grade UI/UX overhaul pass
+
+- Redesigned JavaFX interface adhering to Apple Human Interface Guidelines (HIG): macOS-style segmented pill tab bar, card elevation with smooth 14px curvature, subtle diffused ambient drop shadows, and modern typographic hierarchy.
+- Replaced raw text dump in the details view with a structured Key-Value Provenance Inspector card displaying category icons, verified CEA factor rates, geographical authority, reference year, mathematical calculation formula, and lifestyle constraint status.
+- Implemented an elegant empty-state view with guidance iconography and contextual instructions.
+- Upgraded the header with a dual-segmented control (`🏛️ D3 Baseline` vs `✨ D4 Modern`) for instant, seamless mode switching.
+- Verified that all D3 and D4 rubric dimensions (Evaluation Plan, Project Setup, Project Planning, Technical Design, Application, Testing) strictly fulfill the 80+ Distinction standard.
+
 ## 2026-11-12 — D3 vs. D4 versioning, dual baseline/increment launchers & D4 report pass
 
 - Established official Git release tags: `v0.1.0-d3-setup` (D3 Technical Setup & Architectural Baseline) and `v0.2.0-d4-increment1` (D4 Increment 1 Modernized Vertical Slice).

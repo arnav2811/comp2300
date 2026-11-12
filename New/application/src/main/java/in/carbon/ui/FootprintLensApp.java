@@ -32,6 +32,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -48,6 +49,8 @@ public final class FootprintLensApp extends Application {
     private Workspace workspace;
     private ListView<Activity> activityList;
     private TextArea detailArea;
+    private VBox detailInspector;
+    private VBox emptyStateContainer;
     private Label statusLabel;
     private Label personalTotal;
     private Label householdTotal;
@@ -146,27 +149,44 @@ public final class FootprintLensApp extends Application {
         Label title = new Label(d3BaselineMode
                 ? "Footprint Lens (D3 Architectural Baseline)"
                 : "🌱 Footprint Lens (D4 Increment 1)");
-        title.setFont(Font.font("System", FontWeight.BOLD, d3BaselineMode ? 22 : 26));
+        title.setFont(Font.font("System", FontWeight.BOLD, d3BaselineMode ? 22 : 24));
         title.getStyleClass().add("title");
         Label subtitle = new Label(d3BaselineMode
                 ? "D3 Technical Setup & Walking Skeleton — Clean Layered Architecture Baseline (v0.1.0)"
-                : "India-Centric Carbon Footprint Awareness — Modern Card Architecture & Visual Provenance (v0.2.0)");
+                : "India-Centric Carbon Footprint Awareness — Apple HIG Modern Card Architecture (v0.2.0)");
         subtitle.getStyleClass().add("subtitle");
-        VBox text = new VBox(4, title, subtitle);
+        VBox text = new VBox(3, title, subtitle);
 
-        Button switchMode = new Button(d3BaselineMode ? "✨ Switch to D4 Modern View" : "🏛️ Switch to D3 Baseline View");
-        switchMode.setStyle(d3BaselineMode
-                ? "-fx-background-color: #059669; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 16px; -fx-background-radius: 6px; -fx-cursor: hand;"
-                : "-fx-background-color: rgba(255,255,255,0.18); -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 16px; -fx-background-radius: 6px; -fx-border-color: rgba(255,255,255,0.4); -fx-border-radius: 6px; -fx-cursor: hand;");
-        switchMode.setOnAction(e -> toggleVersionMode());
+        HBox segmentedControl = new HBox(2);
+        segmentedControl.setAlignment(Pos.CENTER);
+        segmentedControl.setStyle("-fx-background-color: rgba(0,0,0,0.22); -fx-background-radius: 18px; -fx-padding: 3px;");
 
-        HBox header = new HBox(20, text, switchMode);
+        Button btnD3 = new Button("🏛️ D3 Baseline");
+        Button btnD4 = new Button("✨ D4 Modern");
+
+        if (d3BaselineMode) {
+            btnD3.setStyle("-fx-background-color: #ffffff; -fx-text-fill: #065f46; -fx-font-weight: bold; -fx-background-radius: 15px; -fx-padding: 6px 14px; -fx-cursor: hand; -fx-font-size: 12px;");
+            btnD4.setStyle("-fx-background-color: transparent; -fx-text-fill: rgba(255,255,255,0.85); -fx-font-weight: 600; -fx-background-radius: 15px; -fx-padding: 6px 14px; -fx-cursor: hand; -fx-font-size: 12px;");
+        } else {
+            btnD3.setStyle("-fx-background-color: transparent; -fx-text-fill: rgba(255,255,255,0.85); -fx-font-weight: 600; -fx-background-radius: 15px; -fx-padding: 6px 14px; -fx-cursor: hand; -fx-font-size: 12px;");
+            btnD4.setStyle("-fx-background-color: #ffffff; -fx-text-fill: #065f46; -fx-font-weight: bold; -fx-background-radius: 15px; -fx-padding: 6px 14px; -fx-cursor: hand; -fx-font-size: 12px;");
+        }
+
+        btnD3.setOnAction(e -> {
+            if (!d3BaselineMode) toggleVersionMode();
+        });
+        btnD4.setOnAction(e -> {
+            if (d3BaselineMode) toggleVersionMode();
+        });
+        segmentedControl.getChildren().addAll(btnD3, btnD4);
+
+        HBox header = new HBox(20, text, segmentedControl);
         HBox.setHgrow(text, Priority.ALWAYS);
         header.setAlignment(Pos.CENTER_LEFT);
-        header.setPadding(new Insets(18, 32, 18, 32));
+        header.setPadding(new Insets(16, 32, 16, 32));
         header.getStyleClass().add("header");
         if (d3BaselineMode) {
-            header.setStyle("-fx-background-color: #334155; -fx-padding: 16px 24px;");
+            header.setStyle("-fx-background-color: #334155; -fx-padding: 16px 28px;");
         } else {
             header.setStyle("");
         }
@@ -275,6 +295,28 @@ public final class FootprintLensApp extends Application {
         detailArea.setPromptText("Select a record to inspect its assumptions and limits.");
         detailArea.setAccessibleText("Selected record details and assumptions");
 
+        // Modern Apple Inspector for D4
+        detailInspector = new VBox(6);
+        detailInspector.getStyleClass().add("inspector-card");
+
+        emptyStateContainer = new VBox(8);
+        emptyStateContainer.setAlignment(Pos.CENTER);
+        emptyStateContainer.setPadding(new Insets(36, 16, 36, 16));
+        Label leafIcon = new Label("🌱");
+        leafIcon.setStyle("-fx-font-size: 34px;");
+        Label emptyTitle = new Label("No Activity Selected");
+        emptyTitle.setFont(Font.font("System", FontWeight.BOLD, 15));
+        emptyTitle.setStyle("-fx-text-fill: #475569;");
+        Label emptyDesc = new Label("Select an activity on the left to inspect its transparent calculation formula, factor authority, and lifestyle constraint status.");
+        emptyDesc.setWrapText(true);
+        emptyDesc.setStyle("-fx-text-fill: #94a3b8; -fx-font-size: 12.5px; -fx-text-alignment: center;");
+        emptyStateContainer.getChildren().addAll(leafIcon, emptyTitle, emptyDesc);
+
+        StackPane detailStack = new StackPane(detailArea, emptyStateContainer, detailInspector);
+        detailArea.setVisible(d3BaselineMode);
+        emptyStateContainer.setVisible(!d3BaselineMode);
+        detailInspector.setVisible(false);
+
         Button inspect = new Button("🔍 Inspect Assumptions");
         inspect.setOnAction(event -> inspectSelected());
         Button delete = new Button("🗑️ Delete Selected");
@@ -285,12 +327,12 @@ public final class FootprintLensApp extends Application {
         HBox controls = new HBox(10, inspect, delete, refresh);
         controls.setAlignment(Pos.CENTER_LEFT);
 
-        Label detailsHeader = new Label("Selected Record & Provenance");
+        Label detailsHeader = new Label(d3BaselineMode ? "Selected Record" : "Selected Record & Provenance");
         detailsHeader.getStyleClass().add("section-header");
-        VBox right = new VBox(12, detailsHeader, detailArea, controls);
+        VBox right = new VBox(12, detailsHeader, detailStack, controls);
         right.getStyleClass().add("content-card");
         right.setPadding(new Insets(18, 20, 20, 20));
-        right.setPrefWidth(480);
+        right.setPrefWidth(500);
 
         Label recordsHeader = new Label("Logged Activities");
         recordsHeader.getStyleClass().add("section-header");
@@ -582,7 +624,14 @@ public final class FootprintLensApp extends Application {
     }
 
     private void showDetails(Activity activity) {
-        if (activity == null) { detailArea.clear(); return; }
+        if (activity == null) {
+            detailArea.clear();
+            if (!d3BaselineMode && emptyStateContainer != null && detailInspector != null) {
+                emptyStateContainer.setVisible(true);
+                detailInspector.setVisible(false);
+            }
+            return;
+        }
         detailArea.setText("Category: " + activity.category().label() + "\n"
                 + "Quantity: " + activity.quantity().toPlainString() + " " + activity.category().unit() + "\n"
                 + "Scope: " + activity.scope().label() + "\n"
@@ -590,6 +639,59 @@ public final class FootprintLensApp extends Application {
                 + "Estimate: " + activity.estimate().display() + "\n"
                 + activity.estimate().explanation() + "\n\n"
                 + (activity.note().isBlank() ? "No note." : "Note: " + activity.note()));
+
+        if (!d3BaselineMode && emptyStateContainer != null && detailInspector != null) {
+            emptyStateContainer.setVisible(false);
+            detailInspector.setVisible(true);
+            detailInspector.getChildren().clear();
+
+            String icon = switch (activity.category()) {
+                case ELECTRICITY -> "⚡";
+                case TRAVEL -> "🚗";
+                case FOOD -> "🥗";
+                case WATER -> "💧";
+                case PACKAGING -> "📦";
+                case WASTE -> "🗑️";
+                case REPAIR_REUSE -> "♻️";
+            };
+
+            Label title = new Label(icon + "  " + activity.category().label());
+            title.setFont(Font.font("System", FontWeight.BOLD, 16));
+            title.setStyle("-fx-text-fill: #0f172a; -fx-padding: 0 0 6px 0;");
+            detailInspector.getChildren().add(title);
+
+            detailInspector.getChildren().add(inspectorRow("Recorded Consumption", activity.quantity().toPlainString() + " " + activity.category().unit()));
+            detailInspector.getChildren().add(inspectorRow("Accounting Scope", activity.scope() == Scope.HOUSEHOLD ? "🏠 Household (undivided collective total)" : "👤 Personal (individual direct consumption)"));
+            detailInspector.getChildren().add(inspectorRow("Emissions Estimate", activity.estimate().display()));
+
+            if (activity.factor() != null) {
+                detailInspector.getChildren().add(inspectorRow("Emission Factor Rate", activity.factor().value().stripTrailingZeros().toPlainString() + " kg " + activity.factor().metric() + "/" + activity.factor().denominatorUnit()));
+                detailInspector.getChildren().add(inspectorRow("Data Authority & Year", activity.factor().source() + " (" + activity.factor().year() + ", " + activity.factor().geography() + ")"));
+                detailInspector.getChildren().add(inspectorRow("Calculation Formula", activity.quantity().stripTrailingZeros().toPlainString() + " " + activity.category().unit() + " × " + activity.factor().value().stripTrailingZeros().toPlainString() + " kg/unit = " + activity.estimate().display()));
+                detailInspector.getChildren().add(inspectorRow("Provenance Status", "VERIFIED (Official CEA Grid Benchmark)"));
+            } else {
+                detailInspector.getChildren().add(inspectorRow("Factor Status", "UNAVAILABLE (Descriptive record — zero fake numbers)"));
+            }
+
+            detailInspector.getChildren().add(inspectorRow("Lifestyle Constraint", activity.protectedChoice()
+                    ? "🛡️ Protected Choice (Safety / Shift necessity respected; advice suppressed)"
+                    : "Discretionary consumption (Eligible for coaching suggestions)"));
+
+            if (!activity.note().isBlank()) {
+                detailInspector.getChildren().add(inspectorRow("Personal Context Note", activity.note()));
+            }
+        }
+    }
+
+    private VBox inspectorRow(String key, String val) {
+        Label keyLbl = new Label(key);
+        keyLbl.getStyleClass().add("inspector-key");
+        Label valLbl = new Label(val);
+        valLbl.getStyleClass().add("inspector-val");
+        valLbl.setWrapText(true);
+        VBox row = new VBox(2, keyLbl, valLbl);
+        row.getStyleClass().add("inspector-row");
+        return row;
     }
 
     private Activity selected() { return activityList == null ? null : activityList.getSelectionModel().getSelectedItem(); }

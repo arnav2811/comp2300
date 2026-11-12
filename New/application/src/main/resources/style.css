@@ -1,83 +1,90 @@
 /* ==========================================================================
-   Footprint Lens — Modern Professional Design System (JavaFX CSS)
-   Theme: Eco Emerald, Slate & Modern Card Elevation
+   Footprint Lens — Apple Human Interface Guidelines (HIG) Design System
+   Aesthetic: Cupertino Clean, Cupertino Green & Layered Card Architecture
    ========================================================================== */
 
-/* Root & Global Typography */
+/* 1. Global System Typography & Base Palette */
 .root {
-    -fx-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    -fx-font-size: 14px;
+    -fx-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13.5px;
     -fx-base: #f8fafc;
-    -fx-background-color: #f8fafc;
-    -fx-text-fill: #1e293b;
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #0f172a;
     -fx-focus-color: #10b981;
-    -fx-faint-focus-color: #d1fae5;
+    -fx-faint-focus-color: rgba(16, 185, 129, 0.15);
 }
 
 .app-root {
-    -fx-background-color: #f8fafc;
+    -fx-background-color: #f1f5f9;
 }
 
-/* Header Banner with Forest Gradient */
+/* 2. Apple-Style Header Banner */
 .header {
-    -fx-background-color: linear-gradient(to right, #064e3b, #047857, #059669);
-    -fx-padding: 22px 32px 20px 32px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0, 0, 3);
+    -fx-background-color: linear-gradient(to right, #064e3b 0%, #065f46 45%, #047857 100%);
+    -fx-padding: 18px 32px 18px 32px;
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+    -fx-border-width: 0 0 1px 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 12, 0, 0, 3);
 }
 
 .title {
-    -fx-font-size: 26px;
+    -fx-font-size: 24px;
     -fx-font-weight: 800;
     -fx-text-fill: #ffffff;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 4, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0, 0, 1);
 }
 
 .subtitle {
-    -fx-font-size: 13px;
+    -fx-font-size: 12.5px;
     -fx-text-fill: #a7f3d0;
     -fx-font-weight: 500;
 }
 
-/* Modern Tab Pane */
+/* 3. Apple Segmented Control for Tabs */
 .tab-pane {
-    -fx-background-color: #f8fafc;
+    -fx-background-color: #f1f5f9;
     -fx-tab-min-height: 42px;
     -fx-tab-max-height: 42px;
 }
 
 .tab-pane .tab-header-area {
-    -fx-padding: 12px 24px 0 24px;
-    -fx-background-color: #f1f5f9;
-    -fx-border-color: #e2e8f0;
-    -fx-border-width: 0 0 1px 0;
+    -fx-background-color: transparent;
+    -fx-padding: 14px 28px 6px 28px;
+    -fx-border-width: 0;
 }
 
 .tab-pane .tab-header-background {
     -fx-background-color: transparent;
 }
 
+.tab-pane .headers-region {
+    -fx-background-color: #e2e8f0;
+    -fx-background-radius: 12px;
+    -fx-padding: 3px;
+}
+
 .tab-pane .tab {
     -fx-background-color: transparent;
-    -fx-background-radius: 8px 8px 0 0;
-    -fx-padding: 8px 20px;
+    -fx-background-radius: 9px;
+    -fx-padding: 6px 18px;
     -fx-cursor: hand;
     -fx-border-width: 0;
 }
 
 .tab-pane .tab:hover {
-    -fx-background-color: #e2e8f0;
+    -fx-background-color: rgba(255, 255, 255, 0.5);
 }
 
 .tab-pane .tab:selected {
     -fx-background-color: #ffffff;
-    -fx-border-color: #10b981;
-    -fx-border-width: 0 0 3px 0;
+    -fx-background-radius: 9px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 6, 0, 0, 1.5);
 }
 
 .tab-pane .tab .tab-label {
     -fx-text-fill: #64748b;
     -fx-font-weight: 600;
-    -fx-font-size: 14px;
+    -fx-font-size: 13px;
 }
 
 .tab-pane .tab:selected .tab-label {
@@ -85,29 +92,29 @@
     -fx-font-weight: 700;
 }
 
-/* Metric / Stat Cards */
+/* 4. Stat & Metric Cards (Apple Health / Fitness Aesthetic) */
 .stat-card {
     -fx-background-color: #ffffff;
     -fx-border-color: #e2e8f0;
     -fx-border-width: 1px;
-    -fx-border-radius: 12px;
-    -fx-background-radius: 12px;
+    -fx-border-radius: 14px;
+    -fx-background-radius: 14px;
     -fx-padding: 16px 22px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 10, 0, 0, 2);
 }
 
 .stat-card-personal {
-    -fx-border-color: #e2e8f0 #e2e8f0 #e2e8f0 #10b981;
+    -fx-border-color: #e2e8f0 #e2e8f0 #e2e8f0 #059669;
     -fx-border-width: 1px 1px 1px 5px;
 }
 
 .stat-card-household {
-    -fx-border-color: #e2e8f0 #e2e8f0 #e2e8f0 #3b82f6;
+    -fx-border-color: #e2e8f0 #e2e8f0 #e2e8f0 #2563eb;
     -fx-border-width: 1px 1px 1px 5px;
 }
 
 .stat {
-    -fx-font-size: 24px;
+    -fx-font-size: 26px;
     -fx-font-weight: 800;
     -fx-text-fill: #0f172a;
 }
@@ -115,23 +122,24 @@
 .stat-sub {
     -fx-font-size: 12px;
     -fx-text-fill: #64748b;
+    -fx-font-weight: 500;
 }
 
 .muted {
     -fx-text-fill: #64748b;
-    -fx-font-size: 13px;
+    -fx-font-size: 12.5px;
     -fx-font-weight: 600;
 }
 
-/* Content Container Cards */
+/* 5. Content Container Cards */
 .content-card {
     -fx-background-color: #ffffff;
     -fx-border-color: #e2e8f0;
     -fx-border-width: 1px;
-    -fx-border-radius: 12px;
-    -fx-background-radius: 12px;
-    -fx-padding: 24px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.03), 8, 0, 0, 2);
+    -fx-border-radius: 14px;
+    -fx-background-radius: 14px;
+    -fx-padding: 22px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.03), 10, 0, 0, 2);
 }
 
 .section-header {
@@ -141,22 +149,23 @@
     -fx-padding: 0 0 6px 0;
 }
 
-/* Buttons */
+/* 6. Apple-Style Buttons */
 .button {
     -fx-background-color: #ffffff;
     -fx-border-color: #cbd5e1;
     -fx-border-width: 1px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
+    -fx-border-radius: 9px;
+    -fx-background-radius: 9px;
     -fx-text-fill: #334155;
     -fx-font-weight: 600;
     -fx-font-size: 13px;
     -fx-padding: 8px 18px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.02), 4, 0, 0, 1);
 }
 
 .button:hover {
-    -fx-background-color: #f1f5f9;
+    -fx-background-color: #f8fafc;
     -fx-border-color: #94a3b8;
 }
 
@@ -167,12 +176,12 @@
 .primary-button {
     -fx-background-color: #059669;
     -fx-border-color: #047857;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
+    -fx-border-radius: 9px;
+    -fx-background-radius: 9px;
     -fx-text-fill: #ffffff;
     -fx-font-weight: 700;
     -fx-padding: 9px 22px;
-    -fx-effect: dropshadow(gaussian, rgba(5, 150, 105, 0.3), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(5, 150, 105, 0.28), 8, 0, 0, 2);
 }
 
 .primary-button:hover {
@@ -188,8 +197,8 @@
     -fx-background-color: #fef2f2;
     -fx-border-color: #fecaca;
     -fx-text-fill: #dc2626;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
+    -fx-border-radius: 9px;
+    -fx-background-radius: 9px;
     -fx-font-weight: 600;
 }
 
@@ -198,14 +207,14 @@
     -fx-border-color: #fca5a5;
 }
 
-/* Form Controls & Text Fields */
+/* 7. Apple-Style Form Controls */
 .text-field, .text-area, .combo-box {
     -fx-background-color: #ffffff;
     -fx-border-color: #cbd5e1;
     -fx-border-width: 1px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-padding: 8px 12px;
+    -fx-border-radius: 9px;
+    -fx-background-radius: 9px;
+    -fx-padding: 9px 13px;
     -fx-font-size: 13px;
     -fx-text-fill: #0f172a;
 }
@@ -230,8 +239,8 @@
 .check-box .box {
     -fx-background-color: #ffffff;
     -fx-border-color: #cbd5e1;
-    -fx-border-radius: 4px;
-    -fx-background-radius: 4px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
 }
 
 .check-box:selected .box {
@@ -243,13 +252,13 @@
     -fx-background-color: #ffffff;
 }
 
-/* ListView / Activity Cards */
+/* 8. ListView / Timeline Items */
 .list-view {
     -fx-background-color: #ffffff;
     -fx-border-color: #e2e8f0;
     -fx-border-width: 1px;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
     -fx-padding: 4px;
 }
 
@@ -270,17 +279,69 @@
     -fx-background-color: #ecfdf5;
     -fx-text-fill: #065f46;
     -fx-font-weight: bold;
-    -fx-border-color: #10b981;
+    -fx-border-color: #059669;
     -fx-border-width: 0 0 0 4px;
 }
 
-/* Callout Banners */
+/* 9. Key-Value Provenance Inspector */
+.inspector-card {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 16px;
+}
+
+.inspector-row {
+    -fx-padding: 6px 0;
+    -fx-border-color: transparent transparent #edf2f7 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.inspector-key {
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #64748b;
+    -fx-text-transform: uppercase;
+}
+
+.inspector-val {
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #0f172a;
+}
+
+/* 10. Empty State */
+.empty-state {
+    -fx-padding: 36px 20px;
+    -fx-alignment: center;
+}
+
+.empty-state-icon {
+    -fx-font-size: 36px;
+    -fx-text-fill: #94a3b8;
+}
+
+.empty-state-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #475569;
+}
+
+.empty-state-desc {
+    -fx-font-size: 12.5px;
+    -fx-text-fill: #94a3b8;
+    -fx-text-alignment: center;
+}
+
+/* 11. Callouts & Badges */
 .callout {
     -fx-background-color: #f0fdf4;
     -fx-border-color: #bbf7d0;
     -fx-border-width: 1px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
     -fx-padding: 12px 18px;
     -fx-text-fill: #166534;
     -fx-font-size: 13px;
@@ -292,7 +353,7 @@
     -fx-text-fill: #92400e;
 }
 
-/* Status Bar */
+/* 12. Bottom Status Bar */
 .status-bar {
     -fx-background-color: #ffffff;
     -fx-border-color: #e2e8f0 transparent transparent transparent;
@@ -303,11 +364,24 @@
     -fx-font-weight: 500;
 }
 
-/* ScrollPane */
+/* 13. Slim Modern ScrollBars */
 .scroll-pane {
     -fx-background-color: transparent;
 }
 
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical, .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 6px;
+}
+
+.scroll-bar:vertical .thumb:hover, .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #94a3b8;
 }
