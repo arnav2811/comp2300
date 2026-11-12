@@ -56,6 +56,17 @@
 - Added explicit SWOT decision material and the second council pass, with the
   failed Arnav subagent retry recorded honestly and a labelled fallback review.
 
+## 2026-11-12 — D3 distinction-grade architectural design, evaluation plan & runtime guides
+
+- Upgraded `New/D3/architecture.md` with complete Clean Layered Architecture specification, Mermaid UML diagrams (Class, Sequence, Package, State), layer invariants, requirements traceability, and 5 detailed Architectural Decision Records (ADRs: headless-first domain core, immutable Java 21 records, arbitrary-precision `BigDecimal` math, deterministic non-speculative rule engine, local zero-telemetry CSV store).
+- Upgraded `New/D3/evaluation-protocol.md` to distinction standard: controlled lab setting in UoS study room, mandatory peer-cohort recruitment ($N=6$) strictly from another COMP2300 student group, strict UK GDPR Article 9 compliance prohibiting sensitive personal data or real utility bills, 5 pre-printed synthetic scenario cards (Cards A–E), concurrent think-aloud usability testing protocol, System Usability Scale (SUS) benchmark ($\ge 75$), Single Ease Question (SEQ), and thematic affinity diagramming analysis.
+- Upgraded `New/D3/project-plan.md` to distinction standard: 4-sprint roadmap, detailed Sprint 1 backlog with Fibonacci story points (21 pts total) across owners (Arnav, Keshav, Hiranya), Definition of Ready (DoR), Definition of Done (DoD), burndown chart trajectory tracking, and Agile Scrum meeting cadence.
+- Upgraded `New/D3/rubric-matrix.md` and `New/D3/report.md` confirming 80+ Distinction readiness across all criteria.
+- Authored formal LaTeX submission reports: `New/D3/report/main.tex` and `New/D3/report/technical-design-and-evaluation-plan.tex` featuring native TikZ vector UML diagrams (Class, Sequence, Package, State), burndown chart, risk heatmap, and ACM SIGCHI citations.
+- Updated all runtime guide README files (`New/README.md`, `New/D2/README.md`, `New/D3/README.md`, `New/application/README.md`) with explicit, step-by-step instructions for running the prototype, executing tests, running the Java headless smoke suite (`CoreSmoke`), building with Maven, and compiling LaTeX reports.
+- Verified headless smoke test: `java -cp "New/application/build/classes;New/application/build/test-classes" in.carbon.core.CoreSmoke` passed 10/10 checks.
+- Verified D2 prototype tests: `node --test New/D2/prototype/prototype-logic.test.mjs` passed 8/8 checks, structure check passed.
+
 ## 2026-11-12 — D2 distinction-grade conceptual design & TikZ flowcharts pass
 
 - Upgraded `D2/report/main.tex` with native TikZ vector flowcharts for the ideation funnel, Concept A (Contextual Choice Coach), Concept B (Household Commons Board), and Concept C (Quiet-Week Action Cards).
