@@ -73,9 +73,18 @@ public final class FootprintLensApp extends Application {
     private Button saveActivityButton;
     private boolean loadFailed;
     private Category lastCategory;
+    private boolean d3BaselineMode = false;
+    private Scene mainScene;
+    private BorderPane rootPane;
 
     @Override
     public void start(Stage stage) {
+        if (getParameters() != null && getParameters().getRaw().contains("--d3")) {
+            d3BaselineMode = true;
+        } else if ("true".equalsIgnoreCase(System.getProperty("d3.baseline"))) {
+            d3BaselineMode = true;
+        }
+
         Path defaultPath = Path.of(System.getProperty("user.home"), ".footprint-lens", "records.csv");
         String configuredPath = System.getProperty("footprint.lens.store");
         workspace = new Workspace(configuredPath == null || configuredPath.isBlank()
@@ -89,52 +98,90 @@ public final class FootprintLensApp extends Application {
             initialStatus = "The local store could not be loaded: " + ex.getMessage();
         }
 
-        BorderPane root = new BorderPane();
-        root.getStyleClass().add("app-root");
-        root.setTop(buildHeader());
-        root.setCenter(buildTabs());
+        rootPane = new BorderPane();
+        rootPane.getStyleClass().add("app-root");
+        rootPane.setTop(buildHeader());
+        rootPane.setCenter(buildTabs());
         statusLabel = new Label(initialStatus);
         statusLabel.getStyleClass().add("status-bar");
-        root.setBottom(statusLabel);
+        rootPane.setBottom(statusLabel);
 
-        Scene scene = new Scene(root, 1140, 780);
-        var css = getClass().getResource("/style.css");
-        if (css != null) {
-            scene.getStylesheets().add(css.toExternalForm());
-        } else {
-            java.nio.file.Path localCss = java.nio.file.Path.of("src/main/resources/style.css");
-            if (!java.nio.file.Files.exists(localCss)) localCss = java.nio.file.Path.of("New/application/src/main/resources/style.css");
-            if (java.nio.file.Files.exists(localCss)) scene.getStylesheets().add(localCss.toUri().toString());
-        }
-        stage.setTitle("Footprint Lens — understand, compare, choose");
+        mainScene = new Scene(rootPane, 1140, 780);
+        applyCurrentTheme();
+
+        stage.setTitle(d3BaselineMode
+                ? "Footprint Lens — D3 Technical Setup & Architectural Baseline"
+                : "Footprint Lens — D4 Increment 1 (understand, compare, choose)");
         stage.setMinWidth(720);
         stage.setMinHeight(650);
-        stage.setScene(scene);
+        stage.setScene(mainScene);
         stage.show();
         refreshOverview();
     }
 
-    private VBox buildHeader() {
-        Label title = new Label("🌱 Footprint Lens");
-        title.setFont(Font.font("System", FontWeight.BOLD, 26));
+    private void applyCurrentTheme() {
+        if (mainScene == null) return;
+        mainScene.getStylesheets().clear();
+        if (!d3BaselineMode) {
+            var css = getClass().getResource("/style.css");
+            if (css != null) {
+                mainScene.getStylesheets().add(css.toExternalForm());
+            } else {
+                java.nio.file.Path localCss = java.nio.file.Path.of("src/main/resources/style.css");
+                if (!java.nio.file.Files.exists(localCss)) localCss = java.nio.file.Path.of("New/application/src/main/resources/style.css");
+                if (java.nio.file.Files.exists(localCss)) mainScene.getStylesheets().add(localCss.toUri().toString());
+            }
+        }
+    }
+
+    private void toggleVersionMode() {
+        d3BaselineMode = !d3BaselineMode;
+        applyCurrentTheme();
+        rootPane.setTop(buildHeader());
+        rootPane.setCenter(buildTabs());
+        refreshOverview();
+    }
+
+    private HBox buildHeader() {
+        Label title = new Label(d3BaselineMode
+                ? "Footprint Lens (D3 Architectural Baseline)"
+                : "🌱 Footprint Lens (D4 Increment 1)");
+        title.setFont(Font.font("System", FontWeight.BOLD, d3BaselineMode ? 22 : 26));
         title.getStyleClass().add("title");
-        Label subtitle = new Label("India-Centric Carbon Footprint Awareness — Transparent, Feasible and Non-Judgemental");
+        Label subtitle = new Label(d3BaselineMode
+                ? "D3 Technical Setup & Walking Skeleton — Clean Layered Architecture Baseline (v0.1.0)"
+                : "India-Centric Carbon Footprint Awareness — Modern Card Architecture & Visual Provenance (v0.2.0)");
         subtitle.getStyleClass().add("subtitle");
-        VBox header = new VBox(6, title, subtitle);
-        header.setPadding(new Insets(22, 32, 20, 32));
+        VBox text = new VBox(4, title, subtitle);
+
+        Button switchMode = new Button(d3BaselineMode ? "✨ Switch to D4 Modern View" : "🏛️ Switch to D3 Baseline View");
+        switchMode.setStyle(d3BaselineMode
+                ? "-fx-background-color: #059669; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 16px; -fx-background-radius: 6px; -fx-cursor: hand;"
+                : "-fx-background-color: rgba(255,255,255,0.18); -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 16px; -fx-background-radius: 6px; -fx-border-color: rgba(255,255,255,0.4); -fx-border-radius: 6px; -fx-cursor: hand;");
+        switchMode.setOnAction(e -> toggleVersionMode());
+
+        HBox header = new HBox(20, text, switchMode);
+        HBox.setHgrow(text, Priority.ALWAYS);
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.setPadding(new Insets(18, 32, 18, 32));
         header.getStyleClass().add("header");
+        if (d3BaselineMode) {
+            header.setStyle("-fx-background-color: #334155; -fx-padding: 16px 24px;");
+        } else {
+            header.setStyle("");
+        }
         return header;
     }
 
     private TabPane buildTabs() {
         TabPane tabs = new TabPane();
-        Tab overview = new Tab("📊 Overview & Records", buildOverview());
+        Tab overview = new Tab(d3BaselineMode ? "Overview & records" : "📊 Overview & Records", buildOverview());
         overview.setClosable(false);
-        Tab add = new Tab("➕ Add Activity", buildEntryForm());
+        Tab add = new Tab(d3BaselineMode ? "Add activity" : "➕ Add Activity", buildEntryForm());
         add.setClosable(false);
-        Tab actions = new Tab("🎯 Actions & Comparisons", buildActions());
+        Tab actions = new Tab(d3BaselineMode ? "Actions & comparisons" : "🎯 Actions & Comparisons", buildActions());
         actions.setClosable(false);
-        Tab help = new Tab("ℹ️ About & Boundaries", buildAbout());
+        Tab help = new Tab(d3BaselineMode ? "About & boundaries" : "ℹ️ About & Boundaries", buildAbout());
         help.setClosable(false);
         tabs.getTabs().addAll(overview, add, actions, help);
         return tabs;
@@ -157,6 +204,10 @@ public final class FootprintLensApp extends Application {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
+                    setGraphic(null);
+                } else if (d3BaselineMode) {
+                    setText(item.displayName() + "  •  " + item.estimate().display()
+                            + (item.protectedChoice() ? "  •  protected choice" : ""));
                     setGraphic(null);
                 } else {
                     String icon = switch (item.category()) {
@@ -256,6 +307,16 @@ public final class FootprintLensApp extends Application {
     }
 
     private VBox statCard(String title, Label value, boolean isHousehold) {
+        if (d3BaselineMode) {
+            Label heading = new Label(title);
+            heading.getStyleClass().add("muted");
+            value.getStyleClass().add("stat");
+            VBox box = new VBox(4, heading, value);
+            box.getStyleClass().add("stat-card");
+            box.setPadding(new Insets(12));
+            box.setMinWidth(250);
+            return box;
+        }
         Label heading = new Label((isHousehold ? "🏠 " : "👤 ") + title);
         heading.getStyleClass().add("muted");
         value.getStyleClass().add("stat");

@@ -63,7 +63,22 @@ Footprint Lens core smoke: PASS (10 checks)
 
 ---
 
-## 4. How to Compile the D3 LaTeX Reports
+## 4. How to Launch the D3 Baseline Desktop Application
+
+To view the raw architectural walking skeleton submitted as the D3 Technical Setup baseline:
+
+```powershell
+# Launch D3 Architectural Baseline
+.\run-d3-baseline.bat
+```
+*(Or double-click `run-d3-baseline.bat` from Windows File Explorer)*
+
+- **Git Release Tag for D3:** `git checkout v0.1.0-d3-setup`
+- **Subsequent D4 Increment:** In Sprint 1, the team evolved this raw architectural skeleton into the modernized card-based interface delivered in Deliverable D4 (tagged `v0.2.0-d4-increment1` and launched via `.\run-app.bat`). An in-app toggle in the header allows switching between both views in real time.
+
+---
+
+## 5. How to Compile the D3 LaTeX Reports
 
 The D3 submission report is typeset in professional LaTeX using 12pt type, 1.5 cm margins, native TikZ vector graphics, and ACM SIGCHI bibliographic style.
 

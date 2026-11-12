@@ -32,20 +32,38 @@ The D2 prototype is an interactive, accessible simulation of the **Contextual Ch
    python New/D2/prototype/prototype-structure-check.py
    ```
 
-### 1.2 Verify the Java Core & Application (Headless Smoke Suite)
-The core domain logic is decoupled from JavaFX, allowing immediate headless testing without requiring a graphical display:
+### 1.2 Run & Compare the Java Desktop Applications (D3 vs. D4)
+The Java application supports running either the **D3 Architectural Baseline** or the **D4 Modernized Increment 1**:
 
-1. **Run the headless smoke test suite** (from the workspace root):
+1. **Run D4 Modernized Increment 1 (Default):**
+   ```powershell
+   .\run-app.bat
+   ```
+   *(Or double-click `run-app.bat` from Windows File Explorer)*  
+   *Launches the modern card-based interface with category emoji chips (`⚡`, `🚗`), scope tags, gold `🛡️ Protected` indicators, and full Sprint 1 features (Git Tag: `v0.2.0-d4-increment1`).*
+
+2. **Run D3 Architectural Baseline:**
+   ```powershell
+   .\run-d3-baseline.bat
+   ```
+   *(Or double-click `run-d3-baseline.bat` from Windows File Explorer)*  
+   *Launches the initial unstyled walking skeleton submitted as the D3 technical setup baseline prior to Sprint 1 (Git Tag: `v0.1.0-d3-setup`).*
+
+3. **In-App Real-Time Toggle:**
+   Click the button in the top-right corner of the application header at any time:
+   * Click **`🏛️ Switch to D3 Baseline View`** to inspect the unstyled architectural baseline.
+   * Click **`✨ Switch to D4 Modern View`** to return to the polished Increment 1 interface.
+
+4. **Run the Headless Smoke Test Suite** (Zero GUI/Maven dependencies):
    ```powershell
    java -cp "New/application/build/classes;New/application/build/test-classes" in.carbon.core.CoreSmoke
    ```
    *(Expected result: `Footprint Lens core smoke: PASS (10 checks)`)*
 
-2. **Standard Maven build & desktop launch** (if Maven is installed):
+5. **Standard Maven build** (if Maven is installed):
    ```powershell
    cd New/application
    mvn clean verify      # Compiles code, executes JUnit 5 tests, generates JaCoCo report
-   mvn javafx:run        # Launches the JavaFX desktop GUI application
    ```
 
 ### 1.3 Compile the Formal LaTeX Reports

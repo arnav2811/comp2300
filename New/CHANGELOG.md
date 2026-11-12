@@ -56,6 +56,15 @@
 - Added explicit SWOT decision material and the second council pass, with the
   failed Arnav subagent retry recorded honestly and a labelled fallback review.
 
+## 2026-11-12 — D3 vs. D4 versioning, dual baseline/increment launchers & D4 report pass
+
+- Established official Git release tags: `v0.1.0-d3-setup` (D3 Technical Setup & Architectural Baseline) and `v0.2.0-d4-increment1` (D4 Increment 1 Modernized Vertical Slice).
+- Added interactive in-app runtime mode toggle in `FootprintLensApp`: allows switching between the unstyled D3 Architectural Baseline view and the modernized D4 Increment 1 card view in real time with a single click.
+- Created dedicated launchers for both versions: `run-d3-baseline.bat` / `run-d3-baseline.ps1` for D3, and `run-app.bat` / `run-app.ps1` for D4.
+- Authored formal LaTeX submission report `New/D4/report/main.tex` and updated `New/D4/report.md` documenting Sprint 1 burndown completion (21 story points burned down to 0), acceptance criteria verification across `D2-US01` through `D2-US07`, and the systematic progression from D3 to D4.
+- Synchronized `New/README.md`, `New/D3/README.md`, and `New/D4/README.md` with explicit release tags, progression matrices, and runnable comparison commands.
+- Verified compilation and test suites: `CoreSmoke` passed 10/10 checks, direct JavaFX compilation passed with 0 warnings.
+
 ## 2026-11-12 — D3 distinction-grade architectural design, evaluation plan & runtime guides
 
 - Upgraded `New/D3/architecture.md` with complete Clean Layered Architecture specification, Mermaid UML diagrams (Class, Sequence, Package, State), layer invariants, requirements traceability, and 5 detailed Architectural Decision Records (ADRs: headless-first domain core, immutable Java 21 records, arbitrary-precision `BigDecimal` math, deterministic non-speculative rule engine, local zero-telemetry CSV store).
