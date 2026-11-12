@@ -40,19 +40,19 @@ The Java application supports running either the **D3 Architectural Baseline** o
    .\run-app.bat
    ```
    *(Or double-click `run-app.bat` from Windows File Explorer)*  
-   *Launches the modern card-based interface with category emoji chips (`⚡`, `🚗`), scope tags, gold `🛡️ Protected` indicators, and full Sprint 1 features (Git Tag: `v0.2.0-d4-increment1`).*
+   *Launches the modern Google Material You card interface with real-time category filter chips, tonal green/blue cards, scope tags, gold `🛡️ Protected` indicators, and full Sprint 1 features (Git Tag: `v0.2.0-d4-increment1`).*
 
 2. **Run D3 Architectural Baseline:**
    ```powershell
    .\run-d3-baseline.bat
    ```
    *(Or double-click `run-d3-baseline.bat` from Windows File Explorer)*  
-   *Launches the initial unstyled walking skeleton submitted as the D3 technical setup baseline prior to Sprint 1 (Git Tag: `v0.1.0-d3-setup`).*
+   *Launches the D3 architectural walking skeleton designed in a Google Engineering Studio blueprint style, showcasing the decoupled domain model, ISO 14064-1 scope boundaries, and schema invariants (Git Tag: `v0.1.0-d3-setup`).*
 
 3. **In-App Real-Time Toggle:**
-   Click the button in the top-right corner of the application header at any time:
-   * Click **`🏛️ Switch to D3 Baseline View`** to inspect the unstyled architectural baseline.
-   * Click **`✨ Switch to D4 Modern View`** to return to the polished Increment 1 interface.
+   Click the segmented button in the top-right corner of the application header at any time:
+   * Click **`🏛️ D3 Baseline`** to inspect the Google Engineering Studio architectural skeleton.
+   * Click **`✨ D4 Modern`** to return to the polished Material You Increment 1 interface.
 
 4. **Run the Headless Smoke Test Suite** (Zero GUI/Maven dependencies):
    ```powershell

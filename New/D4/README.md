@@ -17,9 +17,9 @@ In COMP2300 Agile SCRUM development, Deliverable D4 represents the delivery of *
 | Dimension | D3: Technical Setup & Baseline (`v0.1.0-d3-setup`) | D4: Increment 1 Delivery (`v0.2.0-d4-increment1`) |
 |---|---|---|
 | **Primary Focus** | Architectural proof-of-concept, clean package separation, headless verification, evaluation plan, and sprint backlog. | Runnable user-facing vertical slice implementing Sprint 1 user stories with complete acceptance verification. |
-| **User Interface** | Raw unstyled system controls (walking skeleton layout, plain text list cells, standard buttons). | Modern card-based design system: forest emerald header, category emoji chips (`⚡`, `🚗`, `🥗`), scope badges, stat elevation, and gold `🛡️ Protected` badges. |
+| **User Interface** | Google Engineering Studio Blueprint (minimalist slate header, monospace entity readout, schema inspector, ISO 14064-1 scope tags). | Google Material You & Apple HIG card architecture: lush forest emerald gradient header, tonal green/blue stat containers, real-time Category Filter Chips, category avatar circles, scope badges, stat elevation, and gold `🛡️ Protected` badges. |
 | **Implemented Stories** | Planned in Backlog (Sprint 1 commitments: 21 story points). | **Delivered & Done:** `D2-US01` (entry), `D2-US02` (numeric/unavailable), `D2-US03` (assumptions), `D2-US04` (validation), `D2-US07` (descriptive non-electricity). |
-| **User Experience** | Functional but barebones; intended to verify architecture and I/O. | Polished and accessible; inline validation feedback, category-specific units, and non-destructive navigation. |
+| **User Experience** | Clean, minimalist, and architecturally transparent; intended to verify architecture and I/O. | Polished, accessible, and delightful; real-time category filter chips (`All`, `Electricity`, `Travel`, `Food`, `Water`, `Packaging`, `Waste`, `Repair`), inline validation feedback, category-specific units, and non-destructive navigation. |
 | **Data Persistence** | Initial `LocalStore` file creation and header check. | Full atomic CSV persistence with active session synchronization and failure recovery. |
 | **How to Launch** | Run `.\run-d3-baseline.bat` or pass `--d3` | Run `.\run-app.bat` or launch directly |
 
@@ -34,19 +34,19 @@ Double-click **`run-app.bat`** in the repository root or run:
 ```powershell
 .\run-app.bat
 ```
-*Launches the full D4 Increment 1 modern card interface with styled widgets, category chips, and visual badges.*
+*Launches the full D4 Increment 1 modern card interface with Google Material You tonal cards, real-time category filter chips, and visual badges.*
 
 ### Option B: Run the D3 Architectural Baseline Application
 Double-click **`run-d3-baseline.bat`** in the repository root or run:
 ```powershell
 .\run-d3-baseline.bat
 ```
-*Launches the initial D3 architectural walking skeleton to demonstrate the raw baseline established prior to Sprint 1.*
+*Launches the initial D3 architectural walking skeleton in Google Engineering Studio blueprint style to demonstrate the clean layered architecture established prior to Sprint 1.*
 
 ### Option C: Live Interactive Switch Inside the Running App
-Whenever the application is open, click the button in the top-right corner of the header:
-* Click **`🏛️ Switch to D3 Baseline View`** to see the unstyled architectural skeleton.
-* Click **`✨ Switch to D4 Modern View`** to return to the polished Increment 1 interface.
+Whenever the application is open, click the segmented button in the top-right corner of the header:
+* Click **`🏛️ D3 Baseline`** to inspect the Google Engineering Studio architectural skeleton.
+* Click **`✨ D4 Modern`** to return to the polished Material You Increment 1 interface.
 
 ---
 

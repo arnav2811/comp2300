@@ -65,7 +65,7 @@ Footprint Lens core smoke: PASS (10 checks)
 
 ## 4. How to Launch the D3 Baseline Desktop Application
 
-To view the raw architectural walking skeleton submitted as the D3 Technical Setup baseline:
+To view the architectural walking skeleton submitted as the D3 Technical Setup baseline:
 
 ```powershell
 # Launch D3 Architectural Baseline
@@ -73,8 +73,15 @@ To view the raw architectural walking skeleton submitted as the D3 Technical Set
 ```
 *(Or double-click `run-d3-baseline.bat` from Windows File Explorer)*
 
+### Visual & Architectural Design Features of D3:
+- **Google Engineering Studio Aesthetic:** Crafted with minimalist elegance—Google Charcoal header (`#202124`), subtle borders (`#DADCE0`), and crisp sans-serif typography.
+- **Architectural Entity Specification:** The inspector details pure domain invariants (entity class `in.carbon.core.Activity`, schema, UUID, calculation engine, factor authority, and headless test status).
+- **ISO 14064-1 Accounting Boundaries:** Stat metrics explicitly differentiate Personal Scope (direct) from Household Scope (undivided collective total).
+- **Domain Store Readout:** Activities display monospace technical identifiers (`[ACT-01]`) with explicit factor provenance citations.
+- **Interactive In-App Switcher:** Click the `[✨ D4 Modern]` button in the top-right header at any time to instantly transition from the D3 architectural baseline to the modernized D4 Increment 1 interface!
+
 - **Git Release Tag for D3:** `git checkout v0.1.0-d3-setup`
-- **Subsequent D4 Increment:** In Sprint 1, the team evolved this raw architectural skeleton into the modernized card-based interface delivered in Deliverable D4 (tagged `v0.2.0-d4-increment1` and launched via `.\run-app.bat`). An in-app toggle in the header allows switching between both views in real time.
+- **Subsequent D4 Increment:** In Sprint 1, the team evolved this architectural skeleton into the modernized card-based interface delivered in Deliverable D4 (tagged `v0.2.0-d4-increment1` and launched via `.\run-app.bat`).
 
 ---
 

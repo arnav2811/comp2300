@@ -92,6 +92,14 @@
 - Integrated a 5-dimension Multi-Criteria Decision Matrix (MCDM) and competitor novelty analysis table into both LaTeX reports and `concepts-and-diagrams.md`.
 - Synchronized `D2/conceptual-design-working.md`, `D2/rubric-matrix.md`, and `D2/report.md` to reflect Distinction (80--90%+) readiness.
 
+## 2026-11-13 — Google Material You aesthetic & D3 architectural blueprint pass
+
+- **Google Material You Design System:** Upgraded the application stylesheet (`style.css`) with Google Material 3 tokens: Google Sans / Roboto typography, serene surface palette (`#F8F9FA` / `#FFFFFF`), soft tonal containers (`#E6F4EA` for eco-green, `#E8F0FE` for household blue, `#FEF7E0` for protected choices), and 20px pill buttons.
+- **Graceful D3 Architectural Walking Skeleton:** Completely redesigned the D3 baseline view (`.d3-mode`) to look like a minimalist Google Engineering Studio architectural blueprint rather than raw unstyled controls. Includes a Google Charcoal header (`#202124`), monospace entity identifiers (`[ACT-01]`), structured tabular metadata, clean ISO 14064-1 scope tags, and an Architectural Invariants & Provenance Inspector detailing entity class, UUID, calculation engine, factor authority, and headless test status.
+- **Real-Time Category Filter Chips:** Implemented an interactive pill chip bar (`[All Records]`, `[⚡ Electricity]`, `[🚗 Travel]`, `[🥗 Food]`, `[💧 Water]`, `[📦 Packaging]`, `[🗑️ Waste]`, `[♻️ Repair & Reuse]`) that dynamically filters logged activities in real time.
+- **Dual Launcher & Live Switch Synchronization:** Enhanced `run-app.bat`, `run-app.ps1`, `run-d3-baseline.bat`, and `run-d3-baseline.ps1` to ensure `style.css` is always synchronized and classes compiled. Both modes load the unified stylesheet with instant mode switching via the header segmented control.
+- **Automated Verification:** 10/10 `CoreSmoke` headless tests pass; 8/8 D2 prototype tests pass; clean compilation with Temurin OpenJDK 25.0.1 and OpenJFX 23.0.1.
+
 ## 2026-11-12 — D2 prototype interaction & navigation repair pass
 
 - Fixed journey sidebar dead-lock: allowed direct navigation to P1 (Describe it) and P6 (Shared total) without blocking on null quantity.

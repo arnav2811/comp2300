@@ -1,55 +1,88 @@
 /* ==========================================================================
-   Footprint Lens — Apple Human Interface Guidelines (HIG) Design System
-   Aesthetic: Cupertino Clean, Cupertino Green & Layered Card Architecture
+   Footprint Lens — Google Material 3 / Material You & Architectural Design System
+   Aesthetic: Minimalist, Graceful, Clean Typography & Dual Mode Architecture
+   Supports:
+     - .d4-mode: Google Material You / Apple HIG Modern Increment (v0.2.0)
+     - .d3-mode: Google Engineering Studio Architectural Blueprint Baseline (v0.1.0)
    ========================================================================== */
 
-/* 1. Global System Typography & Base Palette */
+/* 1. Global Typography & Canvas */
 .root {
-    -fx-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -fx-font-family: "Google Sans", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     -fx-font-size: 13.5px;
-    -fx-base: #f8fafc;
-    -fx-background-color: #f1f5f9;
-    -fx-text-fill: #0f172a;
-    -fx-focus-color: #10b981;
-    -fx-faint-focus-color: rgba(16, 185, 129, 0.15);
+    -fx-base: #f8f9fa;
+    -fx-background-color: #f8f9fa;
+    -fx-text-fill: #202124;
+    -fx-focus-color: #1a73e8;
+    -fx-faint-focus-color: rgba(26, 115, 232, 0.15);
 }
 
 .app-root {
-    -fx-background-color: #f1f5f9;
+    -fx-background-color: #f8f9fa;
 }
 
-/* 2. Apple-Style Header Banner */
+/* ==========================================================================
+   2. HEADER BANNERS & MODE SWITCHER
+   ========================================================================== */
+
 .header {
-    -fx-background-color: linear-gradient(to right, #064e3b 0%, #065f46 45%, #047857 100%);
-    -fx-padding: 18px 32px 18px 32px;
+    -fx-padding: 16px 32px 16px 32px;
     -fx-border-color: rgba(0, 0, 0, 0.08);
     -fx-border-width: 0 0 1px 0;
+}
+
+/* D4 Mode Header: Lush Google Forest Gradient */
+.d4-mode .header {
+    -fx-background-color: linear-gradient(to right, #064e3b 0%, #065f46 45%, #047857 100%);
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 12, 0, 0, 3);
 }
 
-.title {
+.d4-mode .title {
     -fx-font-size: 24px;
     -fx-font-weight: 800;
     -fx-text-fill: #ffffff;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0, 0, 1);
 }
 
-.subtitle {
+.d4-mode .subtitle {
     -fx-font-size: 12.5px;
     -fx-text-fill: #a7f3d0;
     -fx-font-weight: 500;
 }
 
-/* 3. Apple Segmented Control for Tabs */
+/* D3 Mode Header: Google Charcoal Engineering Blueprint */
+.d3-mode .header {
+    -fx-background-color: #202124;
+    -fx-border-color: #3c4043;
+    -fx-border-width: 0 0 1px 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.16), 8, 0, 0, 2);
+}
+
+.d3-mode .title {
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #ffffff;
+}
+
+.d3-mode .subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #9aa0a6;
+    -fx-font-weight: 400;
+}
+
+/* ==========================================================================
+   3. TAB NAVIGATION (Material Rounded & Segmented)
+   ========================================================================== */
+
 .tab-pane {
-    -fx-background-color: #f1f5f9;
+    -fx-background-color: #f8f9fa;
     -fx-tab-min-height: 42px;
     -fx-tab-max-height: 42px;
 }
 
 .tab-pane .tab-header-area {
     -fx-background-color: transparent;
-    -fx-padding: 14px 28px 6px 28px;
+    -fx-padding: 12px 28px 4px 28px;
     -fx-border-width: 0;
 }
 
@@ -58,7 +91,7 @@
 }
 
 .tab-pane .headers-region {
-    -fx-background-color: #e2e8f0;
+    -fx-background-color: #e8eaed;
     -fx-background-radius: 12px;
     -fx-padding: 3px;
 }
@@ -72,175 +105,279 @@
 }
 
 .tab-pane .tab:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-background-color: rgba(255, 255, 255, 0.6);
 }
 
 .tab-pane .tab:selected {
     -fx-background-color: #ffffff;
     -fx-background-radius: 9px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 6, 0, 0, 1.5);
+    -fx-effect: dropshadow(gaussian, rgba(60, 64, 67, 0.12), 6, 0, 0, 1.5);
 }
 
 .tab-pane .tab .tab-label {
-    -fx-text-fill: #64748b;
+    -fx-text-fill: #5f6368;
     -fx-font-weight: 600;
     -fx-font-size: 13px;
 }
 
-.tab-pane .tab:selected .tab-label {
+.d4-mode .tab-pane .tab:selected .tab-label {
     -fx-text-fill: #065f46;
     -fx-font-weight: 700;
 }
 
-/* 4. Stat & Metric Cards (Apple Health / Fitness Aesthetic) */
+.d3-mode .tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #1a73e8;
+    -fx-font-weight: 700;
+}
+
+/* ==========================================================================
+   4. STAT & METRIC CARDS (Material You Tonal & Engineering Blueprint)
+   ========================================================================== */
+
 .stat-card {
     -fx-background-color: #ffffff;
-    -fx-border-color: #e2e8f0;
+    -fx-border-color: #dadce0;
     -fx-border-width: 1px;
     -fx-border-radius: 14px;
     -fx-background-radius: 14px;
     -fx-padding: 16px 22px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 10, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(60, 64, 67, 0.04), 8, 0, 0, 1.5);
 }
 
-.stat-card-personal {
-    -fx-border-color: #e2e8f0 #e2e8f0 #e2e8f0 #059669;
-    -fx-border-width: 1px 1px 1px 5px;
+/* D4 Material You Tonal Cards */
+.d4-mode .stat-card-personal {
+    -fx-background-color: #e6f4ea;
+    -fx-border-color: #ceead6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 14px;
+    -fx-background-radius: 14px;
 }
 
-.stat-card-household {
-    -fx-border-color: #e2e8f0 #e2e8f0 #e2e8f0 #2563eb;
-    -fx-border-width: 1px 1px 1px 5px;
+.d4-mode .stat-card-personal .stat {
+    -fx-text-fill: #137333;
+}
+
+.d4-mode .stat-card-household {
+    -fx-background-color: #e8f0fe;
+    -fx-border-color: #d2e3fc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 14px;
+    -fx-background-radius: 14px;
+}
+
+.d4-mode .stat-card-household .stat {
+    -fx-text-fill: #1a73e8;
+}
+
+/* D3 Engineering Blueprint Metric Cards */
+.d3-mode .stat-card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dadce0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
 }
 
 .stat {
     -fx-font-size: 26px;
     -fx-font-weight: 800;
-    -fx-text-fill: #0f172a;
+    -fx-text-fill: #202124;
 }
 
 .stat-sub {
     -fx-font-size: 12px;
-    -fx-text-fill: #64748b;
+    -fx-text-fill: #5f6368;
     -fx-font-weight: 500;
 }
 
 .muted {
-    -fx-text-fill: #64748b;
-    -fx-font-size: 12.5px;
+    -fx-text-fill: #5f6368;
+    -fx-font-size: 12px;
     -fx-font-weight: 600;
 }
 
-/* 5. Content Container Cards */
+/* ==========================================================================
+   5. CONTENT CONTAINER CARDS
+   ========================================================================== */
+
 .content-card {
     -fx-background-color: #ffffff;
-    -fx-border-color: #e2e8f0;
+    -fx-border-color: #dadce0;
     -fx-border-width: 1px;
     -fx-border-radius: 14px;
     -fx-background-radius: 14px;
-    -fx-padding: 22px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.03), 10, 0, 0, 2);
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(60, 64, 67, 0.05), 10, 0, 0, 2);
+}
+
+.d3-mode .content-card {
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 18px;
 }
 
 .section-header {
-    -fx-font-size: 16px;
+    -fx-font-size: 15px;
     -fx-font-weight: 700;
-    -fx-text-fill: #0f172a;
-    -fx-padding: 0 0 6px 0;
+    -fx-text-fill: #202124;
+    -fx-padding: 0 0 4px 0;
 }
 
-/* 6. Apple-Style Buttons */
+/* ==========================================================================
+   6. FILTER CHIPS (Google Material You Pill Buttons)
+   ========================================================================== */
+
+.chip-bar {
+    -fx-padding: 0 0 10px 0;
+}
+
+.filter-chip {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dadce0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 18px;
+    -fx-background-radius: 18px;
+    -fx-text-fill: #3c4043;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-padding: 5px 14px;
+    -fx-cursor: hand;
+}
+
+.filter-chip:hover {
+    -fx-background-color: #f1f3f4;
+    -fx-border-color: #bdc1c6;
+}
+
+.filter-chip-active {
+    -fx-background-color: #065f46;
+    -fx-border-color: #047857;
+    -fx-border-width: 1px;
+    -fx-border-radius: 18px;
+    -fx-background-radius: 18px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-padding: 5px 14px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(6, 95, 70, 0.25), 6, 0, 0, 1.5);
+}
+
+.d3-mode .filter-chip-active {
+    -fx-background-color: #1a73e8;
+    -fx-border-color: #1557b0;
+    -fx-effect: dropshadow(gaussian, rgba(26, 115, 232, 0.25), 6, 0, 0, 1.5);
+}
+
+/* ==========================================================================
+   7. BUTTONS (Material 3 Outlined & Filled)
+   ========================================================================== */
+
 .button {
     -fx-background-color: #ffffff;
-    -fx-border-color: #cbd5e1;
+    -fx-border-color: #dadce0;
     -fx-border-width: 1px;
-    -fx-border-radius: 9px;
-    -fx-background-radius: 9px;
-    -fx-text-fill: #334155;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #3c4043;
     -fx-font-weight: 600;
     -fx-font-size: 13px;
-    -fx-padding: 8px 18px;
+    -fx-padding: 8px 16px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.02), 4, 0, 0, 1);
 }
 
 .button:hover {
-    -fx-background-color: #f8fafc;
-    -fx-border-color: #94a3b8;
+    -fx-background-color: #f1f3f4;
+    -fx-border-color: #bdc1c6;
 }
 
 .button:pressed {
-    -fx-background-color: #e2e8f0;
+    -fx-background-color: #e8eaed;
 }
 
-.primary-button {
+/* Primary Button (Lush Green for D4, Blueprint Blue for D3) */
+.d4-mode .primary-button {
     -fx-background-color: #059669;
     -fx-border-color: #047857;
     -fx-border-radius: 9px;
     -fx-background-radius: 9px;
     -fx-text-fill: #ffffff;
     -fx-font-weight: 700;
-    -fx-padding: 9px 22px;
-    -fx-effect: dropshadow(gaussian, rgba(5, 150, 105, 0.28), 8, 0, 0, 2);
+    -fx-padding: 9px 20px;
+    -fx-effect: dropshadow(gaussian, rgba(5, 150, 105, 0.24), 8, 0, 0, 2);
 }
 
-.primary-button:hover {
+.d4-mode .primary-button:hover {
     -fx-background-color: #047857;
     -fx-border-color: #065f46;
 }
 
-.primary-button:pressed {
-    -fx-background-color: #064e3b;
+.d3-mode .primary-button {
+    -fx-background-color: #1a73e8;
+    -fx-border-color: #1557b0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 700;
+    -fx-padding: 8px 18px;
+    -fx-effect: dropshadow(gaussian, rgba(26, 115, 232, 0.24), 6, 0, 0, 1.5);
+}
+
+.d3-mode .primary-button:hover {
+    -fx-background-color: #1557b0;
 }
 
 .danger-button {
-    -fx-background-color: #fef2f2;
-    -fx-border-color: #fecaca;
-    -fx-text-fill: #dc2626;
-    -fx-border-radius: 9px;
-    -fx-background-radius: 9px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #fce8e6;
+    -fx-text-fill: #d93025;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
     -fx-font-weight: 600;
 }
 
 .danger-button:hover {
-    -fx-background-color: #fee2e2;
-    -fx-border-color: #fca5a5;
+    -fx-background-color: #fce8e6;
+    -fx-border-color: #fad2cf;
 }
 
-/* 7. Apple-Style Form Controls */
+/* ==========================================================================
+   8. FORM CONTROLS (Material Outlined Fields)
+   ========================================================================== */
+
 .text-field, .text-area, .combo-box {
     -fx-background-color: #ffffff;
-    -fx-border-color: #cbd5e1;
+    -fx-border-color: #dadce0;
     -fx-border-width: 1px;
-    -fx-border-radius: 9px;
-    -fx-background-radius: 9px;
-    -fx-padding: 9px 13px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 12px;
     -fx-font-size: 13px;
-    -fx-text-fill: #0f172a;
+    -fx-text-fill: #202124;
 }
 
 .text-field:focused, .text-area:focused, .combo-box:focused {
-    -fx-border-color: #10b981;
+    -fx-border-color: #1a73e8;
     -fx-border-width: 2px;
     -fx-background-color: #ffffff;
 }
 
 .combo-box .list-cell {
     -fx-padding: 4px 8px;
-    -fx-text-fill: #0f172a;
+    -fx-text-fill: #202124;
 }
 
 .check-box {
     -fx-font-size: 13px;
-    -fx-text-fill: #334155;
+    -fx-text-fill: #3c4043;
     -fx-cursor: hand;
 }
 
 .check-box .box {
     -fx-background-color: #ffffff;
-    -fx-border-color: #cbd5e1;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
+    -fx-border-color: #dadce0;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
 }
 
 .check-box:selected .box {
@@ -248,14 +385,22 @@
     -fx-border-color: #047857;
 }
 
+.d3-mode .check-box:selected .box {
+    -fx-background-color: #1a73e8;
+    -fx-border-color: #1557b0;
+}
+
 .check-box:selected .mark {
     -fx-background-color: #ffffff;
 }
 
-/* 8. ListView / Timeline Items */
+/* ==========================================================================
+   9. LIST VIEW & TIMELINE
+   ========================================================================== */
+
 .list-view {
     -fx-background-color: #ffffff;
-    -fx-border-color: #e2e8f0;
+    -fx-border-color: #dadce0;
     -fx-border-width: 1px;
     -fx-border-radius: 12px;
     -fx-background-radius: 12px;
@@ -265,28 +410,39 @@
 .list-cell {
     -fx-background-color: transparent;
     -fx-padding: 10px 14px;
-    -fx-border-color: transparent transparent #f1f5f9 transparent;
+    -fx-border-color: transparent transparent #f1f3f4 transparent;
     -fx-border-width: 0 0 1px 0;
     -fx-font-size: 13px;
-    -fx-text-fill: #1e293b;
+    -fx-text-fill: #202124;
 }
 
 .list-cell:hover {
-    -fx-background-color: #f8fafc;
+    -fx-background-color: #f8f9fa;
 }
 
-.list-cell:selected {
-    -fx-background-color: #ecfdf5;
+.d4-mode .list-cell:selected {
+    -fx-background-color: #e6f4ea;
     -fx-text-fill: #065f46;
     -fx-font-weight: bold;
     -fx-border-color: #059669;
     -fx-border-width: 0 0 0 4px;
 }
 
-/* 9. Key-Value Provenance Inspector */
+.d3-mode .list-cell:selected {
+    -fx-background-color: #e8f0fe;
+    -fx-text-fill: #1a73e8;
+    -fx-font-weight: bold;
+    -fx-border-color: #1a73e8;
+    -fx-border-width: 0 0 0 4px;
+}
+
+/* ==========================================================================
+   10. INSPECTOR CARD & DATA PROVENANCE
+   ========================================================================== */
+
 .inspector-card {
-    -fx-background-color: #f8fafc;
-    -fx-border-color: #e2e8f0;
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dadce0;
     -fx-border-width: 1px;
     -fx-border-radius: 12px;
     -fx-background-radius: 12px;
@@ -295,76 +451,58 @@
 
 .inspector-row {
     -fx-padding: 6px 0;
-    -fx-border-color: transparent transparent #edf2f7 transparent;
+    -fx-border-color: transparent transparent #e8eaed transparent;
     -fx-border-width: 0 0 1px 0;
 }
 
 .inspector-key {
     -fx-font-size: 11px;
     -fx-font-weight: 700;
-    -fx-text-fill: #64748b;
+    -fx-text-fill: #5f6368;
     -fx-text-transform: uppercase;
 }
 
 .inspector-val {
-    -fx-font-size: 13.5px;
+    -fx-font-size: 13px;
     -fx-font-weight: 600;
-    -fx-text-fill: #0f172a;
+    -fx-text-fill: #202124;
 }
 
-/* 10. Empty State */
-.empty-state {
-    -fx-padding: 36px 20px;
-    -fx-alignment: center;
-}
+/* ==========================================================================
+   11. CALLOUTS & NOTICES
+   ========================================================================== */
 
-.empty-state-icon {
-    -fx-font-size: 36px;
-    -fx-text-fill: #94a3b8;
-}
-
-.empty-state-title {
-    -fx-font-size: 15px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #475569;
-}
-
-.empty-state-desc {
-    -fx-font-size: 12.5px;
-    -fx-text-fill: #94a3b8;
-    -fx-text-alignment: center;
-}
-
-/* 11. Callouts & Badges */
 .callout {
-    -fx-background-color: #f0fdf4;
-    -fx-border-color: #bbf7d0;
+    -fx-background-color: #e6f4ea;
+    -fx-border-color: #ceead6;
     -fx-border-width: 1px;
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
     -fx-padding: 12px 18px;
-    -fx-text-fill: #166534;
+    -fx-text-fill: #137333;
     -fx-font-size: 13px;
 }
 
 .callout-warning {
-    -fx-background-color: #fffbeb;
-    -fx-border-color: #fde68a;
-    -fx-text-fill: #92400e;
+    -fx-background-color: #fef7e0;
+    -fx-border-color: #feefc3;
+    -fx-text-fill: #b06000;
 }
 
-/* 12. Bottom Status Bar */
+/* ==========================================================================
+   12. STATUS BAR & SCROLLBARS
+   ========================================================================== */
+
 .status-bar {
     -fx-background-color: #ffffff;
-    -fx-border-color: #e2e8f0 transparent transparent transparent;
+    -fx-border-color: #dadce0 transparent transparent transparent;
     -fx-border-width: 1px 0 0 0;
     -fx-padding: 9px 24px;
-    -fx-text-fill: #475569;
+    -fx-text-fill: #5f6368;
     -fx-font-size: 12px;
     -fx-font-weight: 500;
 }
 
-/* 13. Slim Modern ScrollBars */
 .scroll-pane {
     -fx-background-color: transparent;
 }
@@ -378,10 +516,10 @@
 }
 
 .scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
-    -fx-background-color: #cbd5e1;
+    -fx-background-color: #dadce0;
     -fx-background-radius: 6px;
 }
 
 .scroll-bar:vertical .thumb:hover, .scroll-bar:horizontal .thumb:hover {
-    -fx-background-color: #94a3b8;
+    -fx-background-color: #bdc1c6;
 }

@@ -15,5 +15,11 @@ if (-not (Test-Path "$fxPath\javafx-base\23.0.1\javafx-base-23.0.1-win.jar")) {
 }
 
 $classesDir = Join-Path $PSScriptRoot "New\application\build\classes"
-& java --module-path "$fxJars" --add-modules javafx.controls,javafx.fxml -cp "$classesDir" in.carbon.ui.FootprintLensApp --d3 $args
+if (-not (Test-Path $classesDir)) { New-Item -ItemType Directory -Path $classesDir -Force | Out-Null }
 
+Copy-Item "New\application\src\main\resources\style.css" "$classesDir\style.css" -Force
+
+$sources = (Get-ChildItem -Path "New\application\src\main\java\in\carbon\core\*.java", "New\application\src\main\java\in\carbon\ui\*.java").FullName
+& javac --module-path "$fxJars" --add-modules javafx.controls,javafx.fxml -d "$classesDir" $sources
+
+& java --module-path "$fxJars" --add-modules javafx.controls,javafx.fxml -cp "$classesDir" in.carbon.ui.FootprintLensApp --d3 $args
