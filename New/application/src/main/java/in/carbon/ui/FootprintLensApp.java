@@ -97,9 +97,15 @@ public final class FootprintLensApp extends Application {
         statusLabel.getStyleClass().add("status-bar");
         root.setBottom(statusLabel);
 
-        Scene scene = new Scene(root, 1120, 760);
+        Scene scene = new Scene(root, 1140, 780);
         var css = getClass().getResource("/style.css");
-        if (css != null) scene.getStylesheets().add(css.toExternalForm());
+        if (css != null) {
+            scene.getStylesheets().add(css.toExternalForm());
+        } else {
+            java.nio.file.Path localCss = java.nio.file.Path.of("src/main/resources/style.css");
+            if (!java.nio.file.Files.exists(localCss)) localCss = java.nio.file.Path.of("New/application/src/main/resources/style.css");
+            if (java.nio.file.Files.exists(localCss)) scene.getStylesheets().add(localCss.toUri().toString());
+        }
         stage.setTitle("Footprint Lens — understand, compare, choose");
         stage.setMinWidth(720);
         stage.setMinHeight(650);
@@ -109,26 +115,26 @@ public final class FootprintLensApp extends Application {
     }
 
     private VBox buildHeader() {
-        Label title = new Label("Footprint Lens");
-        title.setFont(Font.font("System", FontWeight.BOLD, 28));
+        Label title = new Label("🌱 Footprint Lens");
+        title.setFont(Font.font("System", FontWeight.BOLD, 26));
         title.getStyleClass().add("title");
-        Label subtitle = new Label("India-centric footprint awareness — transparent, feasible and non-judgemental");
+        Label subtitle = new Label("India-Centric Carbon Footprint Awareness — Transparent, Feasible and Non-Judgemental");
         subtitle.getStyleClass().add("subtitle");
-        VBox header = new VBox(4, title, subtitle);
-        header.setPadding(new Insets(22, 28, 18, 28));
+        VBox header = new VBox(6, title, subtitle);
+        header.setPadding(new Insets(22, 32, 20, 32));
         header.getStyleClass().add("header");
         return header;
     }
 
     private TabPane buildTabs() {
         TabPane tabs = new TabPane();
-        Tab overview = new Tab("Overview & records", buildOverview());
+        Tab overview = new Tab("📊 Overview & Records", buildOverview());
         overview.setClosable(false);
-        Tab add = new Tab("Add activity", buildEntryForm());
+        Tab add = new Tab("➕ Add Activity", buildEntryForm());
         add.setClosable(false);
-        Tab actions = new Tab("Actions & comparisons", buildActions());
+        Tab actions = new Tab("🎯 Actions & Comparisons", buildActions());
         actions.setClosable(false);
-        Tab help = new Tab("About & boundaries", buildAbout());
+        Tab help = new Tab("ℹ️ About & Boundaries", buildAbout());
         help.setClosable(false);
         tabs.getTabs().addAll(overview, add, actions, help);
         return tabs;
@@ -139,9 +145,9 @@ public final class FootprintLensApp extends Application {
         householdTotal = new Label();
         personalTotal.setAccessibleText("Partial personal estimated total");
         householdTotal.setAccessibleText("Partial household estimated total");
-        HBox summary = new HBox(18, statCard("Personal estimated total (partial)", personalTotal),
-                statCard("Household estimated total (partial)", householdTotal));
-        summary.setPadding(new Insets(20, 24, 12, 24));
+        HBox summary = new HBox(20, statCard("Personal Estimated Total (Partial)", personalTotal, false),
+                statCard("Household Estimated Total (Partial)", householdTotal, true));
+        summary.setPadding(new Insets(20, 24, 14, 24));
 
         activityList = new ListView<>();
         activityList.setAccessibleText("Saved activity records");
@@ -149,10 +155,60 @@ public final class FootprintLensApp extends Application {
         activityList.setCellFactory(view -> new ListCell<>() {
             @Override protected void updateItem(Activity item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) { setText(null); setGraphic(null); }
-                else {
-                    setText(item.displayName() + "  •  " + item.estimate().display()
-                            + (item.protectedChoice() ? "  •  protected choice" : ""));
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    String icon = switch (item.category()) {
+                        case ELECTRICITY -> "⚡";
+                        case TRAVEL -> "🚗";
+                        case FOOD -> "🥗";
+                        case WATER -> "💧";
+                        case PACKAGING -> "📦";
+                        case WASTE -> "🗑️";
+                        case REPAIR_REUSE -> "♻️";
+                    };
+                    Label iconLabel = new Label(icon);
+                    iconLabel.setFont(Font.font("System", FontWeight.BOLD, 18));
+
+                    Label catLabel = new Label(item.category().label());
+                    catLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
+                    catLabel.setStyle("-fx-text-fill: #0f172a;");
+
+                    Label qtyLabel = new Label(item.quantity().toPlainString() + " " + item.category().unit());
+                    qtyLabel.setStyle("-fx-text-fill: #475569; -fx-font-size: 13px;");
+
+                    HBox topRow = new HBox(8, catLabel, qtyLabel);
+                    topRow.setAlignment(Pos.CENTER_LEFT);
+
+                    Label scopeTag = new Label(item.scope() == Scope.HOUSEHOLD ? "🏠 Household" : "👤 Personal");
+                    scopeTag.setStyle("-fx-background-color: " + (item.scope() == Scope.HOUSEHOLD ? "#eff6ff" : "#ecfdf5") + "; "
+                            + "-fx-text-fill: " + (item.scope() == Scope.HOUSEHOLD ? "#1d4ed8" : "#047857") + "; "
+                            + "-fx-padding: 2px 8px; -fx-background-radius: 6px; -fx-font-size: 11px; -fx-font-weight: bold;");
+
+                    Label estimateBadge = new Label(item.estimate().display());
+                    boolean isNum = item.estimate().available();
+                    estimateBadge.setStyle("-fx-background-color: " + (isNum ? "#d1fae5" : "#f1f5f9") + "; "
+                            + "-fx-text-fill: " + (isNum ? "#065f46" : "#64748b") + "; "
+                            + "-fx-padding: 2px 8px; -fx-background-radius: 6px; -fx-font-size: 11px; -fx-font-weight: bold;");
+
+                    HBox bottomRow = new HBox(8, scopeTag, estimateBadge);
+                    bottomRow.setAlignment(Pos.CENTER_LEFT);
+
+                    if (item.protectedChoice()) {
+                        Label protBadge = new Label("🛡️ Protected");
+                        protBadge.setStyle("-fx-background-color: #fef3c7; -fx-text-fill: #92400e; "
+                                + "-fx-padding: 2px 8px; -fx-background-radius: 6px; -fx-font-size: 11px; -fx-font-weight: bold;");
+                        bottomRow.getChildren().add(protBadge);
+                    }
+
+                    VBox textContainer = new VBox(4, topRow, bottomRow);
+                    HBox cellLayout = new HBox(12, iconLabel, textContainer);
+                    cellLayout.setAlignment(Pos.CENTER_LEFT);
+                    cellLayout.setPadding(new Insets(4, 0, 4, 0));
+
+                    setText(null);
+                    setGraphic(cellLayout);
                 }
             }
         });
@@ -168,35 +224,47 @@ public final class FootprintLensApp extends Application {
         detailArea.setPromptText("Select a record to inspect its assumptions and limits.");
         detailArea.setAccessibleText("Selected record details and assumptions");
 
-        Button inspect = new Button("Inspect assumptions");
+        Button inspect = new Button("🔍 Inspect Assumptions");
         inspect.setOnAction(event -> inspectSelected());
-        Button delete = new Button("Delete selected");
+        Button delete = new Button("🗑️ Delete Selected");
+        delete.getStyleClass().add("danger-button");
         delete.setOnAction(event -> deleteSelected());
-        Button refresh = new Button("Refresh");
+        Button refresh = new Button("🔄 Refresh");
         refresh.setOnAction(event -> refreshOverview());
         HBox controls = new HBox(10, inspect, delete, refresh);
         controls.setAlignment(Pos.CENTER_LEFT);
 
-        VBox right = new VBox(12, new Label("Selected record"), detailArea, controls);
-        right.setPadding(new Insets(10, 24, 24, 12));
-        right.setPrefWidth(470);
-        VBox left = new VBox(new Label("Your records"), activityList);
-        left.setPadding(new Insets(10, 12, 24, 24));
+        Label detailsHeader = new Label("Selected Record & Provenance");
+        detailsHeader.getStyleClass().add("section-header");
+        VBox right = new VBox(12, detailsHeader, detailArea, controls);
+        right.getStyleClass().add("content-card");
+        right.setPadding(new Insets(18, 20, 20, 20));
+        right.setPrefWidth(480);
+
+        Label recordsHeader = new Label("Logged Activities");
+        recordsHeader.getStyleClass().add("section-header");
+        VBox left = new VBox(12, recordsHeader, activityList);
+        left.getStyleClass().add("content-card");
+        left.setPadding(new Insets(18, 20, 20, 20));
         VBox.setVgrow(activityList, Priority.ALWAYS);
-        HBox body = new HBox(left, right);
+
+        HBox body = new HBox(18, left, right);
+        body.setPadding(new Insets(0, 24, 24, 24));
         HBox.setHgrow(left, Priority.ALWAYS);
         HBox.setHgrow(right, Priority.ALWAYS);
         return new BorderPane(body, summary, null, null, null);
     }
 
-    private VBox statCard(String title, Label value) {
-        Label heading = new Label(title);
+    private VBox statCard(String title, Label value, boolean isHousehold) {
+        Label heading = new Label((isHousehold ? "🏠 " : "👤 ") + title);
         heading.getStyleClass().add("muted");
         value.getStyleClass().add("stat");
-        VBox box = new VBox(4, heading, value);
-        box.getStyleClass().add("stat-card");
-        box.setPadding(new Insets(12));
-        box.setMinWidth(250);
+        Label subtext = new Label(isHousehold ? "Shared flat/home consumption (not divided per person)" : "Your individual direct consumption");
+        subtext.getStyleClass().add("stat-sub");
+        VBox box = new VBox(6, heading, value, subtext);
+        box.getStyleClass().addAll("stat-card", isHousehold ? "stat-card-household" : "stat-card-personal");
+        box.setPadding(new Insets(16, 20, 16, 20));
+        box.setMinWidth(320);
         return box;
     }
 
@@ -204,15 +272,15 @@ public final class FootprintLensApp extends Application {
         categoryBox = new ComboBox<>(FXCollections.observableArrayList(Category.values()));
         categoryBox.getSelectionModel().select(Category.ELECTRICITY);
         quantityField = new TextField();
-        quantityField.setPromptText("e.g. 168");
+        quantityField.setPromptText("e.g. 120");
         scopeBox = new ComboBox<>(FXCollections.observableArrayList(Scope.values()));
         scopeBox.getSelectionModel().select(Scope.PERSONAL);
-        protectedBox = new CheckBox("This activity is protected / not changeable");
-        factorBox = new CheckBox("Use my own unverified electricity factor");
+        protectedBox = new CheckBox("🛡️ This activity is a necessary / protected choice (e.g. night shift, safety, medical)");
+        factorBox = new CheckBox("Use my own custom electricity factor (defaults to verified CEA factor)");
         factorBox.setSelected(false);
 
         factorValue = new TextField();
-        factorValue.setPromptText("e.g. 0.716");
+        factorValue.setPromptText("e.g. 0.82");
         metricBox = new ComboBox<>(FXCollections.observableArrayList("CO2", "CO2E"));
         metricBox.getSelectionModel().selectFirst();
         factorSource = new TextField();
@@ -224,34 +292,34 @@ public final class FootprintLensApp extends Application {
         factorBoundary = new TextField();
         factorBoundary.setPromptText("System boundary or method");
         noteArea = new TextArea();
-        noteArea.setPromptText("Optional context; do not enter names or sensitive personal information.");
+        noteArea.setPromptText("Optional context; do not enter sensitive personal or health information.");
         noteArea.setPrefRowCount(3);
 
         GridPane grid = new GridPane();
-        grid.setHgap(14); grid.setVgap(10); grid.setPadding(new Insets(24));
+        grid.setHgap(16); grid.setVgap(12); grid.setPadding(new Insets(18, 20, 18, 20));
         int row = 0;
-        Label categoryLabel = new Label("Activity category"); categoryLabel.setLabelFor(categoryBox);
+        Label categoryLabel = new Label("Activity Category"); categoryLabel.setLabelFor(categoryBox);
         grid.add(categoryLabel, 0, row); grid.add(categoryBox, 1, row++);
         quantityLabel = new Label();
         quantityLabel.setLabelFor(quantityField);
         grid.add(quantityLabel, 0, row); grid.add(quantityField, 1, row++);
-        Label scopeLabel = new Label("Scope"); scopeLabel.setLabelFor(scopeBox);
+        Label scopeLabel = new Label("Accounting Scope"); scopeLabel.setLabelFor(scopeBox);
         grid.add(scopeLabel, 0, row); grid.add(scopeBox, 1, row++);
         grid.add(protectedBox, 1, row++);
         grid.add(factorBox, 1, row++);
-        Label factorValueLabel = new Label("Factor value (kg per kWh)"); factorValueLabel.setLabelFor(factorValue);
+        Label factorValueLabel = new Label("Factor Value (kg/unit)"); factorValueLabel.setLabelFor(factorValue);
         grid.add(factorValueLabel, 0, row); grid.add(factorValue, 1, row++);
-        Label metricLabel = new Label("Metric"); metricLabel.setLabelFor(metricBox);
+        Label metricLabel = new Label("Emissions Metric"); metricLabel.setLabelFor(metricBox);
         grid.add(metricLabel, 0, row); grid.add(metricBox, 1, row++);
-        Label sourceLabel = new Label("Source"); sourceLabel.setLabelFor(factorSource);
+        Label sourceLabel = new Label("Factor Source"); sourceLabel.setLabelFor(factorSource);
         grid.add(sourceLabel, 0, row); grid.add(factorSource, 1, row++);
-        Label yearLabel = new Label("Reference year"); yearLabel.setLabelFor(factorYear);
+        Label yearLabel = new Label("Reference Year"); yearLabel.setLabelFor(factorYear);
         grid.add(yearLabel, 0, row); grid.add(factorYear, 1, row++);
         Label geographyLabel = new Label("Geography"); geographyLabel.setLabelFor(factorGeography);
         grid.add(geographyLabel, 0, row); grid.add(factorGeography, 1, row++);
-        Label boundaryLabel = new Label("Boundary / method"); boundaryLabel.setLabelFor(factorBoundary);
+        Label boundaryLabel = new Label("Boundary / Method"); boundaryLabel.setLabelFor(factorBoundary);
         grid.add(boundaryLabel, 0, row); grid.add(factorBoundary, 1, row++);
-        Label noteLabel = new Label("Note"); noteLabel.setLabelFor(noteArea);
+        Label noteLabel = new Label("Context Note"); noteLabel.setLabelFor(noteArea);
         grid.add(noteLabel, 0, row); grid.add(noteArea, 1, row++);
         GridPane.setHgrow(quantityField, Priority.ALWAYS);
         GridPane.setHgrow(factorSource, Priority.ALWAYS);
@@ -259,23 +327,31 @@ public final class FootprintLensApp extends Application {
         GridPane.setHgrow(factorBoundary, Priority.ALWAYS);
         GridPane.setHgrow(noteArea, Priority.ALWAYS);
 
-        Label explanation = new Label("Unknown is different from zero. Only electricity has a numeric path in this review build; other categories are retained descriptively. A factor is never prefilled: enter and verify its provenance before opting in.");
+        VBox formCard = new VBox(12, grid);
+        formCard.getStyleClass().add("content-card");
+
+        Label explanation = new Label("💡 Unknown is different from zero. Only verified categories (like Electricity) compute numeric estimates; other categories (packaging, repair) are retained descriptively to maintain mathematical honesty.");
         explanation.setWrapText(true);
         explanation.getStyleClass().add("callout");
-        saveActivityButton = new Button("Save activity");
+
+        saveActivityButton = new Button("💾 Save Activity Record");
         saveActivityButton.getStyleClass().add("primary-button");
         saveActivityButton.setDisable(loadFailed);
         saveActivityButton.setOnAction(event -> saveActivity());
-        Button clear = new Button("Clear form");
+        Button clear = new Button("🔄 Clear Form");
         clear.setOnAction(event -> clearForm());
+
         Label storeWarning = new Label(loadFailed
-                ? "Editing is disabled because the local store could not be loaded. Preserve the original file and repair or choose a new workspace before continuing."
-                : "Changes are stored locally; failed validation does not replace the saved file.");
+                ? "⚠️ Editing is disabled because the local store could not be loaded. Check file permissions."
+                : "🔒 All data is persisted privately and locally in ~/.footprint-lens/records.csv (zero cloud tracking).");
         storeWarning.setWrapText(true);
-        storeWarning.getStyleClass().add("callout");
-        HBox buttons = new HBox(10, saveActivityButton, clear);
-        buttons.setPadding(new Insets(0, 24, 24, 24));
-        VBox root = new VBox(explanation, storeWarning, grid, buttons);
+        storeWarning.getStyleClass().addAll("callout", loadFailed ? "callout-warning" : "callout");
+
+        HBox buttons = new HBox(12, saveActivityButton, clear);
+        buttons.setPadding(new Insets(8, 0, 16, 0));
+
+        VBox root = new VBox(16, explanation, storeWarning, formCard, buttons);
+        root.setPadding(new Insets(24));
         categoryBox.setOnAction(event -> updateCategoryState());
         factorBox.setOnAction(event -> updateFactorState());
         updateCategoryState();
@@ -312,27 +388,39 @@ public final class FootprintLensApp extends Application {
     }
 
     private ScrollPane buildActions() {
-        Label intro = new Label("Select a record on the Overview tab. Suggestions use explicit rules and never claim completed savings. Action choices are session-only in this review build.");
+        Label intro = new Label("Select an activity from the Overview tab. The Choice Coach recommends practical, feasible steps. It strictly respects protected lifestyle constraints and suppresses punitive advice.");
         intro.setWrapText(true);
+        intro.getStyleClass().add("callout");
+
         actionSelectionLabel = new Label("No record selected.");
         actionSelectionLabel.getStyleClass().add("muted");
+        actionSelectionLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
+
         TextArea actionText = new TextArea();
         actionText.setEditable(false); actionText.setWrapText(true); actionText.setPrefRowCount(8);
         actionText.setPromptText("Select a record, then inspect its available action or comparison.");
         actionText.setAccessibleText("Action explanation and result");
-        showActionButton = new Button("Show eligible action");
-        chooseActionButton = new Button("Choose action");
-        dismissActionButton = new Button("Not feasible");
-        compareActionButton = new Button("Compare selected electricity");
+
+        showActionButton = new Button("💡 Show Eligible Action");
+        showActionButton.getStyleClass().add("primary-button");
+        chooseActionButton = new Button("✅ Choose Action Plan");
+        dismissActionButton = new Button("❌ Not Feasible");
+        compareActionButton = new Button("⚖️ Compare Alternative");
+
         showActionButton.setOnAction(event -> showAction(actionText));
         chooseActionButton.setOnAction(event -> changeAction(actionText, true));
         dismissActionButton.setOnAction(event -> changeAction(actionText, false));
         compareActionButton.setOnAction(event -> compareSelected());
-        FlowPane buttons = new FlowPane(10, 10, showActionButton, chooseActionButton,
+
+        FlowPane buttons = new FlowPane(12, 12, showActionButton, chooseActionButton,
                 dismissActionButton, compareActionButton);
-        VBox root = new VBox(16, intro, actionSelectionLabel, actionText, buttons);
-        root.setPadding(new Insets(28));
-        VBox.setVgrow(actionText, Priority.ALWAYS);
+
+        VBox actionCard = new VBox(14, actionSelectionLabel, actionText, buttons);
+        actionCard.getStyleClass().add("content-card");
+
+        VBox root = new VBox(18, intro, actionCard);
+        root.setPadding(new Insets(24));
+        VBox.setVgrow(actionCard, Priority.ALWAYS);
         ScrollPane scroll = new ScrollPane(root);
         scroll.setFitToWidth(true);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -357,14 +445,24 @@ public final class FootprintLensApp extends Application {
     }
 
     private VBox buildAbout() {
-        Label heading = new Label("A transparent working product");
+        Label heading = new Label("🌱 About Footprint Lens & Ethical Boundaries");
         heading.setFont(Font.font("System", FontWeight.BOLD, 20));
-        Label text = new Label("Footprint Lens keeps a clear line between a quantity, a factor and an estimate. A missing factor is shown as unavailable, protected choices are not penalised, and household totals are not assigned to people. Illustrative values are visibly labelled.\n\nThis desktop build is offline and stores data locally. It is a design and engineering prototype, not a verified carbon-accounting service. Hindi translation, screen-reader validation, participant evaluation and evidence-backed national factors remain explicit review gates.");
+        heading.getStyleClass().add("section-header");
+        Label text = new Label("Footprint Lens maintains absolute mathematical transparency between recorded quantities, verified emission factors, and resulting estimates.\n\n"
+                + "• Epistemic Honesty: Categories lacking certified regional factors (packaging, repair/reuse) remain descriptive and return 'Estimate Unavailable' rather than fabricating speculative numbers.\n"
+                + "• Protected Lifestyle Constraints: Necessary choices (late-night safety commutes, medical appliances) suppress punitive advice.\n"
+                + "• Scope Isolation: Household collective footprints are kept distinct and are never divided among flatmates.\n"
+                + "• Zero-Telemetry Privacy: All activity records are stored in a local, versioned CSV file (~/.footprint-lens/records.csv). Zero cloud transmission.\n\n"
+                + "Designed for Topic 1: Carbon Footprint Awareness and Reduction (India-Centric Context) in COMP2300.");
         text.setWrapText(true);
-        Button assumptions = new Button("Open project boundaries");
-        assumptions.setOnAction(event -> showInfo("Project boundaries", text.getText()));
-        VBox root = new VBox(16, heading, text, assumptions);
-        root.setPadding(new Insets(30));
+        text.setStyle("-fx-line-spacing: 4px; -fx-font-size: 13px; -fx-text-fill: #334155;");
+        Button assumptions = new Button("📖 View Formal Project Specification");
+        assumptions.getStyleClass().add("primary-button");
+        assumptions.setOnAction(event -> showInfo("Project Boundaries & Ethics", text.getText()));
+        VBox card = new VBox(16, heading, text, assumptions);
+        card.getStyleClass().add("content-card");
+        VBox root = new VBox(card);
+        root.setPadding(new Insets(28));
         return root;
     }
 

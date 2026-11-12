@@ -17,12 +17,11 @@ if not exist "%FX_PATH%\javafx-base\23.0.1\javafx-base-23.0.1-win.jar" (
 )
 
 set CP=New\application\build\classes
+if not exist "%CP%" mkdir "%CP%"
 
-if not exist "%CP%\in\carbon\ui\FootprintLensApp.class" (
-    echo [INFO] Compiled classes not found. Compiling Java sources now...
-    if not exist "%CP%" mkdir "%CP%"
-    javac --module-path "%FX_JARS%" --add-modules javafx.controls,javafx.fxml -d "%CP%" New\application\src\main\java\in\carbon\core\*.java New\application\src\main\java\in\carbon\ui\*.java
-)
+copy /Y "New\application\src\main\resources\style.css" "%CP%\style.css" >nul 2>&1
+
+javac --module-path "%FX_JARS%" --add-modules javafx.controls,javafx.fxml -d "%CP%" New\application\src\main\java\in\carbon\core\*.java New\application\src\main\java\in\carbon\ui\*.java
 
 java --module-path "%FX_JARS%" --add-modules javafx.controls,javafx.fxml -cp "%CP%" in.carbon.ui.FootprintLensApp %*
 

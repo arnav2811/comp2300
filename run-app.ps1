@@ -15,12 +15,11 @@ if (-not (Test-Path "$fxPath\javafx-base\23.0.1\javafx-base-23.0.1-win.jar")) {
 }
 
 $classesDir = Join-Path $PSScriptRoot "New\application\build\classes"
+if (-not (Test-Path $classesDir)) { New-Item -ItemType Directory -Path $classesDir -Force | Out-Null }
 
-if (-not (Test-Path (Join-Path $classesDir "in\carbon\ui\FootprintLensApp.class"))) {
-    Write-Host "[INFO] Compiled classes not found. Compiling Java sources now..." -ForegroundColor Yellow
-    if (-not (Test-Path $classesDir)) { New-Item -ItemType Directory -Path $classesDir -Force | Out-Null }
-    $sources = (Get-ChildItem -Path "New\application\src\main\java\in\carbon\core\*.java", "New\application\src\main\java\in\carbon\ui\*.java").FullName
-    & javac --module-path "$fxJars" --add-modules javafx.controls,javafx.fxml -d "$classesDir" $sources
-}
+Copy-Item "New\application\src\main\resources\style.css" "$classesDir\style.css" -Force
+
+$sources = (Get-ChildItem -Path "New\application\src\main\java\in\carbon\core\*.java", "New\application\src\main\java\in\carbon\ui\*.java").FullName
+& javac --module-path "$fxJars" --add-modules javafx.controls,javafx.fxml -d "$classesDir" $sources
 
 & java --module-path "$fxJars" --add-modules javafx.controls,javafx.fxml -cp "$classesDir" in.carbon.ui.FootprintLensApp $args
